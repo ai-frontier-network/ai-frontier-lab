@@ -9,9 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     
-
-<meta name="robots" content="noindex, nofollow">
-
+    <meta name="robots" content="noindex, nofollow">
 
     <script type="application/ld+json">
     {
@@ -27,10 +25,10 @@
     <header class="site-header">
         <div class="container header-inner">
             <div class="header-left">
-                <h1 class="site-title"><a href="#">AI Frontier Lab</a></h1>
+                <h1 class="site-title"><a href="index.html">AI Frontier Lab</a></h1>
                 <nav class="main-nav">
                     <ul>
-                        <li><a href="#">Latest</a></li>
+                        <li><a href="index.html">Latest</a></li>
                         <li><a href="#">Archive</a></li>
                     </ul>
                 </nav>
@@ -43,16 +41,17 @@
     </header>
 
     <main class="container">
-        <!-- メイン記事 (スクロールアニメーション対象) -->
+        <!-- メイン記事 (スクロールフェードイン対象) -->
         <article class="post fade-element">
             <div class="post-meta">
                 <time datetime="2026-05-28">2026年5月28日 10:00</time>
                 <span class="tag">AI速報</span>
-                <a href="#" class="source-link">情報ソース: Anthropic公式</a>
+                <a href="#" class="source-link" target="_blank">情報ソース: Anthropic公式</a>
             </div>
             
             <h2 class="post-title">Claude 4.0発表：人間を超える長文理解と自然な対話</h2>
 
+            <!-- 第一層：3行まとめ（詳細アコーディオン付き） -->
             <section class="summary-card">
                 <h3>📌 3行まとめ（結論）</h3>
                 <ul>
@@ -60,46 +59,75 @@
                     <li>コンテキストウィンドウが大幅に拡大し、本数冊分を一瞬で理解可能です。</li>
                     <li>人間のような「ニュアンスの理解」と「自然な会話」がさらに向上。</li>
                 </ul>
+                <button class="toggle-button text-toggle" data-close-text="🔍 3行まとめのさらに詳しい解説を読む" data-open-text="▲ 詳しい解説を閉じる">🔍 3行まとめのさらに詳しい解説を読む</button>
+                <div class="toggle-content">
+                    <div class="summary-detail">
+                        <h4>さらに詳しく知りたい方へ</h4>
+                        <p>Claude 4.0は、内部アーキテクチャの抜本的な見直しにより、推論能力が前世代モデルから大幅に向上しています。特に、長文を読み込ませた際の「ピンポイントな情報抽出」の精度が飛躍的に上がっており、ビジネス文書の精査や法務データのチェックなど、よりプロフェッショナルな業務における「ミスの許されないタスク」での活用が想定されています。</p>
+                    </div>
+                </div>
             </section>
 
+            <!-- 第二層：初心者向け解説（続きを読むアコーディオン付き） -->
             <section class="content-section">
                 <h3>💡 つまり、どういうこと？（初心者向け解説）</h3>
-                <p>これまでAIに長文をお願いすると、途中で内容を忘れてしまうことがありました。しかし、今回のClaude 4.0は「記憶力」と「空気を読む力」が格段にアップしています。</p>
+                <p>これまでAIに長文をお願いすると、途中で内容を忘れてしまったり、不自然な回答になることがありました。しかし、今回のClaude 4.0は「記憶力」と「空気を読む力」が格段にアップしています。</p>
+                <button class="toggle-button" data-close-text="📖 つまり？ の続きを詳しく読む" data-open-text="▲ 閉じる">📖 つまり？ の続きを詳しく読む</button>
+                <div class="toggle-content">
+                    <p>例えるなら、<strong>「分厚い辞書を1秒で丸暗記し、さらに『あなたの好み』や『その場の文脈』を正確に忖度してくれる、超優秀な専属アシスタント」</strong>が手に入るようなものです。ChatGPTと比べても、より自然な日本語のニュアンス、相手を気遣うような表現を組み立てるのが得意という個性がさらに磨かれました。</p>
+                </div>
             </section>
 
+            <!-- 第三層：実用アクション -->
             <section class="action-section">
                 <h3>🚀 あなたはどう活かすべき？（実用アクション）</h3>
                 <div class="action-box">
                     <h4>一般ユーザーへの影響とおすすめ</h4>
                     <ul>
-                        <li><strong>長文要約の効率化：</strong> 長いPDF資料を丸ごと投げて要約させるのに最適。</li>
-                        <li><strong>ブログ・メール作成：</strong> 自然な日本語になり作業時間が短縮されます。</li>
+                        <li><strong>長文要約の効率化：</strong> 長いPDF資料や会議の文字起こしを丸ごと投げて、要約させるのに最適です。</li>
+                        <li><strong>ブログ・メール作成：</strong> より自然な日本語になるため、手直しが減り作業時間が短縮されます。</li>
                     </ul>
                 </div>
             </section>
         </article>
 
-        <!-- 関連記事カードセクション (フェードイン対象) -->
-        <section class="articles-grid">
-            <div class="article-card fade-element">
-                <div class="article-meta">
-                    <span>AI News</span>
-                    <span>4 min read</span>
-                </div>
-                <h3>AI検索時代に何が変わるのか？</h3>
-                <p>Google AIO時代の検索変化を、一般ユーザー向けにわかりやすく解説。</p>
-                <a href="#">続きを読む &rarr;</a>
+        <!-- 関連記事カードセクション (最新記事一覧) -->
+        <section class="articles-grid fade-element">
+            <h3 class="grid-title">最新のAIニュース一覧</h3>
+            <div class="grid-container">
+                <article class="article-card">
+                    <div class="article-meta">
+                        <span>AI News</span>
+                        <span>4 min read</span>
+                    </div>
+                    <h3>AI検索時代に何が変わるのか？</h3>
+                    <p>Google AIO時代の検索変化を、一般ユーザー向けにわかりやすく解説。</p>
+                    <a href="#">続きを読む &rarr;</a>
+                </article>
             </div>
-            <!-- 必要に応じてカードを追加 -->
         </section>
 
-        <!-- 初心者向けセクション (フェードイン対象) -->
+        <!-- 初心者向けセクション (その場でQ&Aがアコーディオン展開される) -->
         <section class="beginner-section fade-element" id="beginner">
             <div class="beginner-box">
                 <span class="section-mini">BEGINNER GUIDE</span>
                 <h2>AI初心者でも、<br>置いていかれないために。</h2>
-                <p>ChatGPTとは？ Claudeとの違いは？ AIは何に使える？<br>そんな疑問を、できるだけシンプルに解説します。</p>
-                <a href="#" class="primary-button">初心者ガイドを見る</a>
+                <p>ChatGPTとは？ Claudeとの違いは？ AIは何に使える？<br>そんな日常の小さな疑問を、その場でシンプルに解決します。</p>
+                <button class="toggle-button primary-button" data-close-text="📖 初心者ガイドを見る" data-open-text="▲ ガイドを閉じる">📖 初心者ガイドを見る</button>
+                <div class="toggle-content beginner-guide-content">
+                    <div class="qna-item">
+                        <h4>Q. ChatGPTとは？</h4>
+                        <p>OpenAI社が開発した、人間と話しているかのように自然に対話ができるAIアシスタントです。文章の作成やプログラミング、日常の素朴な疑問への回答まで何でもこなせます。</p>
+                    </div>
+                    <div class="qna-item">
+                        <h4>Q. Claude（クロード）とは？</h4>
+                        <p>Anthropic社が開発したAIです。ChatGPTと比べて、特に長文を正確に読み解く力や、人間の感情に寄り添った自然で知的な日本語を作成する能力に優れています。</p>
+                    </div>
+                    <div class="qna-item">
+                        <h4>Q. AIって実際何に使えるの？</h4>
+                        <p>ビジネスメールの自動作成、長文PDF資料の要約、旅行の計画、プログラミング学習のサポートなど、まるで「何でも知っている頼れる相棒」が24時間いつでも手伝ってくれる感覚で活用できます。</p>
+                    </div>
+                </div>
             </div>
         </section>
     </main>
