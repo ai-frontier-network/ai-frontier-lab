@@ -63,5 +63,82 @@
     "url": "https://blog.google/products-and-platforms/products/search/search-io-2026/",
     "processed_at": "2026-05-29T14:45:31.278831",
     "status": "published"
+  },
+  {
+    "url": "https://openai.com/index/gpt-5-5-instant-system-card",
+    "processed_at": "2026-05-29T15:06:38.321332",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/gpt-5-5-system-card",
+    "processed_at": "2026-05-29T15:08:29.011069",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/helping-disaster-response-teams-asia",
+    "processed_at": "2026-05-29T15:15:29.739513",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/openai-to-acquire-astral",
+    "processed_at": "2026-05-29T15:16:28.737873",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/rakuten",
+    "processed_at": "2026-05-29T15:17:20.508078",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/gpt-5-4-thinking-system-card",
+    "processed_at": "2026-05-29T15:18:04.870368",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/introducing-the-adoption-news-channel",
+    "processed_at": "2026-05-29T15:18:49.238989",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/gpt-5-3-instant-system-card",
+    "processed_at": "2026-05-29T15:19:11.508357",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/gpt-5-3-instant",
+    "processed_at": "2026-05-29T15:19:11.508397",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/harness-engineering",
+    "processed_at": "2026-05-29T15:21:46.721840",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/gpt-5-2-codex-system-card",
+    "processed_at": "2026-05-29T15:28:19.112013",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/group-chats-in-chatgpt",
+    "processed_at": "2026-05-29T15:34:58.071386",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/introducing-agentkit",
+    "processed_at": "2026-05-29T15:41:36.381793",
+    "status": "published"
   }
 ]
