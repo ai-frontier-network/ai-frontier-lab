@@ -295,9 +295,10 @@ def run_article_generator(source_text: str, source_url: str, source_name: str) -
         return ""
 
 # ==========================================
-# 7. index.html & archive.html の全自動ビルド（SSGコンパイル）
+# 7. template_index.html と template_article.html を基にした全自動再ビルド（SSGコンパイル）
 # ==========================================
 def rebuild_index_and_rotate_storage():
+    """テンプレートを読み込み、最新データを反映したサイト全体（トップ、アーカイブ、全個別記事）を全自動で再ビルドする"""
     try:
         json_files = [f for f in os.listdir("data") if f.endswith(".json")]
         all_articles = []
@@ -330,6 +331,49 @@ def rebuild_index_and_rotate_storage():
                         os.remove(path)
                 logging.info(f"古い記事を削除しました: {d_slug}")
 
+        # 🔴 【新規：全個別記事の全自動・一括再ビルド（デグレ完全防止）】
+        # テンプレート（template_article.html）の変更を、過去に生成したすべての個別記事に一瞬で自動反映させます！
+        template_article_path = "template_article.html"
+        if os.path.exists(template_article_path):
+            with open(template_article_path, "r", encoding="utf-8") as f:
+                article_template_content = f.read()
+
+            for mtime, art in all_articles:
+                a_slug = sanitize_slug(art["slug"])
+                a_output_html_path = os.path.join("articles", f"{a_slug}.html")
+
+                # 特殊文字のエスケープ処理
+                a_safe_data = {k: html.escape(str(v)) for k, v in art.items() if k not in ["slug", "source_url", "source_name", "template_version"]}
+                a_safe_source_url = html.escape(art.get("source_url", "#"))
+                a_safe_source_name = html.escape(art.get("source_name", "ソース"))
+
+                # 記事が本来生成された日時をファイルタイムスタンプから安全に復元
+                a_now = datetime.fromtimestamp(mtime)
+                a_date_iso = a_now.strftime("%Y-%m-%dT%H:%M:%S+09:00")
+                a_date_ja = a_now.strftime("%Y年%m月%d日 %H:%M")
+
+                a_html_content = article_template_content
+                a_html_content = a_html_content.replace("{{TITLE}}", a_safe_data["title"])
+                a_html_content = a_html_content.replace("{{DATE_ISO}}", a_date_iso)
+                a_html_content = a_html_content.replace("{{DATE_JA}}", a_date_ja)
+                a_html_content = a_html_content.replace("{{SOURCE_URL}}", a_safe_source_url)
+                a_html_content = a_html_content.replace("{{SOURCE_NAME}}", a_safe_source_name)
+                a_html_content = a_html_content.replace("{{SUMMARY_1}}", a_safe_data["summary_1"])
+                a_html_content = a_html_content.replace("{{SUMMARY_2}}", a_safe_data["summary_2"])
+                a_html_content = a_html_content.replace("{{SUMMARY_3}}", a_safe_data["summary_3"])
+                a_html_content = a_html_content.replace("{{SUMMARY_DETAIL}}", a_safe_data["summary_detail"])
+                a_html_content = a_html_content.replace("{{EXPLANATION_INTRO}}", a_safe_data["explanation_intro"])
+                a_html_content = a_html_content.replace("{{EXPLANATION_FULL}}", a_safe_data["explanation_full"])
+                a_html_content = a_html_content.replace("{{ACTION_1}}", a_safe_data["action_1"])
+                a_html_content = a_html_content.replace("{{ACTION_2}}", a_safe_data["action_2"])
+
+                # 原子性を維持した個別HTMLの書き出し
+                a_tmp_html_path = a_output_html_path + ".tmp"
+                with open(a_tmp_html_path, "w", encoding="utf-8") as f:
+                    f.write(a_html_content)
+                os.replace(a_tmp_html_path, a_output_html_path)
+
+        # index.html のビルド処理
         template_index_path = "template_index.html"
         if not os.path.exists(template_index_path):
             logging.error("template_index.html が見つかりません。")
@@ -338,7 +382,6 @@ def rebuild_index_and_rotate_storage():
         with open(template_index_path, "r", encoding="utf-8") as f:
             index_template_content = f.read()
 
-        # もし記事データがまだ1件も生成されていない場合、デフォルト表示にする
         if not all_articles:
             logging.info("データフォルダが空のため、一覧の更新を保留します。")
             return
@@ -380,7 +423,7 @@ def rebuild_index_and_rotate_storage():
                 </article>
             """
 
-        # 3. index.html をビルド
+        # template_index.html のすべての変数を、安全に一括置換！
         index_content = index_template_content
         index_content = index_content.replace("{{TITLE}}", safe_hero_title)
         index_content = index_content.replace("{{DATE_ISO}}", hero_date_iso)
@@ -397,7 +440,7 @@ def rebuild_index_and_rotate_storage():
         index_content = index_content.replace("{{ACTION_2}}", safe_hero_action2)
         index_content = index_content.replace("{{ARTICLES_GRID}}", articles_html)
 
-        # 原子性を維持して index.html を書き出し保存
+        # 原子性を維持した書き出し保存（index.htmlを作成）
         index_path = "index.html"
         tmp_index_path = index_path + ".tmp"
         with open(tmp_index_path, "w", encoding="utf-8") as f:
@@ -405,8 +448,7 @@ def rebuild_index_and_rotate_storage():
         os.replace(tmp_index_path, index_path)
         logging.info("index.html をビルドしました。")
 
-        # 🔴 改善③（スマート・アーカイブ）：完成した index.html のデザインを完璧に引き継ぎ、
-        # ヒーロー枠を「過去の記事ヘッダー」に、一覧を「全件カード」に置き換えた archive.html を全自動生成！
+        # index.html の内容をベースにして、安全に archive.html をビルド
         archive_articles_html = ""
         for _, art in all_articles:  # アーカイブは全件並べる
             a_title = html.escape(art["title"])
@@ -432,14 +474,11 @@ def rebuild_index_and_rotate_storage():
         </div>
         """
 
-        # index.html の内容をベースにして、安全に置換（デザイン崩れデグレを100%防止）
+        # index.html の内容をベースにして、安全に置換
         archive_content = index_content
-        # ヒーロー記事部分をヘッダーへ置換
         hero_pattern = re.compile(r"<article class=\"post fade-element\">.*?</article>", re.DOTALL)
         archive_content = hero_pattern.sub(archive_hero_header_html, archive_content)
-        # 一覧部分を全件リストへ置換
         archive_content = archive_content.replace(articles_html, archive_articles_html)
-        # タイトル変更
         archive_content = archive_content.replace(f"<title>{safe_hero_title} | AI Frontier Lab</title>", "<title>過去の記事一覧 | AI Frontier Lab</title>")
 
         # 原子性を維持して archive.html を書き出し保存
@@ -450,10 +489,12 @@ def rebuild_index_and_rotate_storage():
         os.replace(tmp_archive_path, archive_path)
         logging.info("archive.html をビルドしました。")
 
-        print("✅ index.html & archive.html の全自動ビルドおよびローテーション削除が完了しました！")
+        print("✅ index.html, archive.html, およびすべての個別記事HTMLの再ビルドが完了しました！")
 
     except Exception as e:
-        logging.error(f"HTMLビルド中にエラーが発生しました: {e}")
+        logging.error(f"再ビルド中にエラーが発生しました: {e}")
+
+
 
 # ==========================================
 # 8. オーケストレーター
