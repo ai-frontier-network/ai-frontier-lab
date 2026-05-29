@@ -1,0 +1,55 @@
+name: AI Article Generator
+
+on:
+  schedule:
+    # 🔴 改善⑦：無料枠にさらに優しく、1日2回（日本時間の朝9時、夜21時）に自動起動を設定（UTC基準）
+    - cron: '0 0,12 * * *'
+  workflow_dispatch:  # 手動実行ボタンを有効にします
+
+# 🔴 改善②：前回処理が長引いた場合の「二重起動（同時並行実行）」を完璧に防ぐ排他制御を設定
+concurrency:
+  group: ai-news-generator
+  cancel-in-progress: false
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write  # GitHubへの自動プッシュに必要です
+
+    steps:
+      - name: リポジトリをチェックアウト
+        uses: actions/checkout@v4
+
+      - name: Pythonのセットアップ
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'  # 🔴 タイポを完璧に修正しました！
+
+      - name: 依存パッケージのインストール
+        run: pip install google-generativeai pydantic
+
+      - name: 記事の自動生成
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}  # 暗号鍵
+          GEMINI_MODEL: "gemini-2.0-flash"  # 🔴 改善⑥：ワークフローのここを書き換えるだけで、コードをいじらずにモデル変更が可能です
+        run: python generate.py
+
+      - name: 生成されたファイルを自動コミット＆プッシュ
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          # 🔴 app.logはGitに追加（add）せず、リポジトリを常に数KBの軽量状態に保ちます
+          git add articles/ data/ index.html logs/history.json
+          git diff --staged --quiet || git commit -m "🤖 Auto: AIニュースを全自動更新（ローテーション対応） [skip ci]"  # 🔴 ループを完全に防ぐ [skip ci]
+          git push
+
+      # 🔴 改善③：ログの肥大化を防ぎつつ、障害時のログをGitHub上に30日間「秘密のファイル」として自動保管する業界最高峰のログ管理
+      - name: ログをアーティファクトとして保存
+        if: always()  # 処理が途中でエラー失敗した場合でも、原因究明のために必ず保存します
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-log-${{ github.run_id }}
+          path: logs/app.log
+          retention-days: 30
+
