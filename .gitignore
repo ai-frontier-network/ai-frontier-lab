@@ -4,3 +4,12 @@
 !.dev.vars.example
 .env*
 !.env.example
+# ログファイルのGit追記を防止（Artifactsに保存するため安全に除外します）
+logs/app.log
+
+# Pythonキャッシュフォルダの除外（デグレやバグの原因を防止）
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
