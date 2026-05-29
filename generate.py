@@ -331,8 +331,7 @@ def rebuild_index_and_rotate_storage():
                         os.remove(path)
                 logging.info(f"古い記事を削除しました: {d_slug}")
 
-        # 🔴 【新規：全個別記事の全自動・一括再ビルド（デグレ完全防止）】
-        # テンプレート（template_article.html）の変更を、過去に生成したすべての個別記事に一瞬で自動反映させます！
+        # 1. すべての個別記事HTMLを最新のテンプレートで一括再ビルド（デグレ完全防止）
         template_article_path = "template_article.html"
         if os.path.exists(template_article_path):
             with open(template_article_path, "r", encoding="utf-8") as f:
@@ -373,7 +372,7 @@ def rebuild_index_and_rotate_storage():
                     f.write(a_html_content)
                 os.replace(a_tmp_html_path, a_output_html_path)
 
-        # index.html のビルド処理
+        # 2. template_index.html の読み込み
         template_index_path = "template_index.html"
         if not os.path.exists(template_index_path):
             logging.error("template_index.html が見つかりません。")
@@ -382,11 +381,12 @@ def rebuild_index_and_rotate_storage():
         with open(template_index_path, "r", encoding="utf-8") as f:
             index_template_content = f.read()
 
+        # もし記事データがまだ1件も生成されていない場合、デフォルト表示にする
         if not all_articles:
             logging.info("データフォルダが空のため、一覧の更新を保留します。")
             return
 
-        # 1. ヒーロー記事（最新の1位）のデータを取得してエスケープ
+        # ヒーロー記事（最新の1位）のデータを取得してエスケープ
         _, hero_art = all_articles[0]
         safe_hero_title = html.escape(hero_art["title"])
         safe_hero_sum1 = html.escape(hero_art["summary_1"])
@@ -403,7 +403,7 @@ def rebuild_index_and_rotate_storage():
         hero_date_ja = datetime.now().strftime("%Y年%m月%d日 %H:%M")
         hero_date_iso = datetime.now().strftime("%Y-%m-%dT%H:%M:%S+09:00")
 
-        # 2. 2番目以降の古い記事（2位〜最大30位）をグリッド用のカードに変換
+        # 3. 2番目以降の古い記事（2位〜最大30位）をグリッド用のカードに変換
         grid_articles = all_articles[1:]
         articles_html = ""
         for _, art in grid_articles:
@@ -423,7 +423,7 @@ def rebuild_index_and_rotate_storage():
                 </article>
             """
 
-        # template_index.html のすべての変数を、安全に一括置換！
+        # 4. template_index.html のすべての変数を、安全に一括置換！
         index_content = index_template_content
         index_content = index_content.replace("{{TITLE}}", safe_hero_title)
         index_content = index_content.replace("{{DATE_ISO}}", hero_date_iso)
@@ -440,15 +440,15 @@ def rebuild_index_and_rotate_storage():
         index_content = index_content.replace("{{ACTION_2}}", safe_hero_action2)
         index_content = index_content.replace("{{ARTICLES_GRID}}", articles_html)
 
-        # 原子性を維持した書き出し保存（index.htmlを作成）
+        # 🔴 改善：古いindex.htmlのチェックをすべて廃止し、template_index.htmlから一撃で新規書き出し保存！
         index_path = "index.html"
         tmp_index_path = index_path + ".tmp"
         with open(tmp_index_path, "w", encoding="utf-8") as f:
             f.write(index_content)
         os.replace(tmp_index_path, index_path)
-        logging.info("index.html をビルドしました。")
+        logging.info("index.html を新規に全自動ビルドしました。")
 
-        # index.html の内容をベースにして、安全に archive.html をビルド
+        # 5. index.html の内容をベースにして、安全に archive.html をビルド
         archive_articles_html = ""
         for _, art in all_articles:  # アーカイブは全件並べる
             a_title = html.escape(art["title"])
@@ -474,7 +474,7 @@ def rebuild_index_and_rotate_storage():
         </div>
         """
 
-        # index.html の内容をベースにして、安全に置換
+        # index_content の内容をベースにして、安全に置換
         archive_content = index_content
         hero_pattern = re.compile(r"<article class=\"post fade-element\">.*?</article>", re.DOTALL)
         archive_content = hero_pattern.sub(archive_hero_header_html, archive_content)
