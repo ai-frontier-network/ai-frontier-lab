@@ -11,6 +11,8 @@ import xml.etree.ElementTree as ET
 from pydantic import BaseModel, Field
 from google import genai
 from google.genai import types
+import socket
+socket.setdefaulttimeout(30)  # 30秒間無反応なら自動でタイムアウトを発生させ、リトライ処理に移行させます
 
 # ==========================================
 # 1. ログ・フォルダ初期設定
