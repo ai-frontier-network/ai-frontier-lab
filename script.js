@@ -47,16 +47,37 @@ document.addEventListener('DOMContentLoaded', () => {
         entries.forEach((entry) => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('show');
-                // 一度表示されたら監視を解除したい場合は以下の行のコメントを外します
-                // observer.unobserve(entry.target);
             }
         });
     }, {
-        threshold: 0.15 // 要素が15%画面に入ったら発火
+        threshold: 0.15
     });
 
     fadeElements.forEach((el) => {
-        el.classList.add('hidden'); // 初期状態で隠す
+        el.classList.add('hidden');
         observer.observe(el);
+    });
+
+    /* =========================================
+       3. メンテナンスフリー型表示・非表示トグル（アコーディオン）
+       ========================================= */
+    const toggleButtons = document.querySelectorAll('.toggle-button');
+
+    toggleButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+            // ボタンの直後の兄弟要素（.toggle-content）を取得
+            const content = button.nextElementSibling;
+            
+            if (content && content.classList.contains('toggle-content')) {
+                content.classList.toggle('open');
+                
+                // HTMLで定義した開閉時の文字を自動取得して切り替え
+                const isOpened = content.classList.contains('open');
+                const openText = button.getAttribute('data-open-text') || '閉じる';
+                const closeText = button.getAttribute('data-close-text') || '詳細を読む';
+                
+                button.textContent = isOpened ? openText : closeText;
+            }
+        });
     });
 });
