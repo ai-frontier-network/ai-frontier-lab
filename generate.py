@@ -4,21 +4,20 @@ import html
 import time
 import json
 import logging
-import uuid  # UUIDによるスラグ衝突の絶対防止
+import uuid
 from datetime import datetime
 import urllib.request
 import xml.etree.ElementTree as ET
 from pydantic import BaseModel, Field
-# 🔴 改善：レガシーなSDKから最新の google-genai SDKへ完全移行
 from google import genai
 from google.genai import types
 
 # ==========================================
-# 1. ログ・フォルダ初期設定（堅牢性と管理0化）
+# 1. ログ・フォルダ初期設定
 # ==========================================
 os.makedirs("logs", exist_ok=True)
-os.makedirs("articles", exist_ok=True)  # 生成されたHTML保存先
-os.makedirs("data", exist_ok=True)      # 生成された中間JSON保存先
+os.makedirs("articles", exist_ok=True)
+os.makedirs("data", exist_ok=True)
 
 logging.basicConfig(
     filename="logs/app.log",
@@ -27,13 +26,11 @@ logging.basicConfig(
     datefmt="%Y-%m-%d %H:%M:%S"
 )
 
-# 【容量パンク防止】記事の最大保持件数（ローテーション設定）
-MAX_ARTICLES_LIMIT = 30 
-# 【履歴肥大化防止】履歴ファイルに保持する最大件数
+MAX_ARTICLES_LIMIT = 30
 MAX_HISTORY_LIMIT = 5000
 
 # ==========================================
-# 2. Pydanticスキーマ定義（JSONの完全バリデーション）
+# 2. Pydanticスキーマ定義
 # ==========================================
 class ArticleOutputSchema(BaseModel):
     title: str = Field(description="日本語のキャッチーで分かりやすいタイトル。〜が登場、〜が可能に、など動詞で終わる自然な表現（35文字以内）。")
@@ -48,7 +45,7 @@ class ArticleOutputSchema(BaseModel):
     slug: str = Field(description="保存するファイル名に使用する半角英数字とハイフンのみのスラグ。例: 'claude-4-release'")
 
 # ==========================================
-# 3. セキュリティ：スラグの強力なサニタイズ（ファイル名保護）
+# 3. スラグのサニタイズ
 # ==========================================
 def sanitize_slug(raw_slug: str) -> str:
     slug = re.sub(r'[^a-z0-9\-]', '', raw_slug.lower())
@@ -58,7 +55,7 @@ def sanitize_slug(raw_slug: str) -> str:
     return slug[:80]
 
 # ==========================================
-# 4. 二重処理防止：処理履歴（history.json）の管理
+# 4. 履歴管理
 # ==========================================
 HISTORY_FILE = "logs/history.json"
 
@@ -67,19 +64,17 @@ def load_history() -> list:
         try:
             with open(HISTORY_FILE, "r", encoding="utf-8") as f:
                 raw_data = json.load(f)
-                
-                # 互換性ガード（古いURLリスト形式が来ても自動で新辞書形式へ安全コンバート）
-                converted_history = []
-                for item in raw_data:
-                    if isinstance(item, str):
-                        converted_history.append({
-                            "url": item,
-                            "processed_at": datetime.now().isoformat(),
-                            "status": "published"
-                        })
-                    elif isinstance(item, dict) and "url" in item:
-                        converted_history.append(item)
-                return converted_history
+            converted_history = []
+            for item in raw_data:
+                if isinstance(item, str):
+                    converted_history.append({
+                        "url": item,
+                        "processed_at": datetime.now().isoformat(),
+                        "status": "published"
+                    })
+                elif isinstance(item, dict) and "url" in item:
+                    converted_history.append(item)
+            return converted_history
         except Exception as e:
             logging.error(f"履歴ファイルの読み込みに失敗しました（初期化します）: {e}")
     return []
@@ -95,15 +90,14 @@ def save_history(history: list):
         logging.error(f"履歴ファイルの保存に失敗しました: {e}")
 
 # ==========================================
-# 5. 標準ライブラリによる安全なRSS取得・パース
+# 5. RSS取得・パース
 # ==========================================
 def fetch_rss_feed(rss_url: str) -> list:
     articles = []
     try:
         logging.info(f"RSSフィードを取得中: {rss_url}")
-        
         req = urllib.request.Request(
-            rss_url, 
+            rss_url,
             headers={
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
                 'Accept': 'application/rss+xml, application/xml, text/xml, */*'
@@ -111,15 +105,15 @@ def fetch_rss_feed(rss_url: str) -> list:
         )
         with urllib.request.urlopen(req, timeout=10) as response:
             xml_data = response.read()
-        
+
         root = ET.fromstring(xml_data)
-        
+
         for item in root.findall('.//item'):
             title = item.find('title').text if item.find('title') is not None else ""
             link = item.find('link').text if item.find('link') is not None else ""
             description = item.find('description').text if item.find('description') is not None else ""
             articles.append({"title": title, "link": link, "description": description})
-            
+
         if not articles:
             ns = {'atom': 'http://www.w3.org/2005/Atom'}
             for entry in root.findall('.//atom:entry', ns):
@@ -131,11 +125,11 @@ def fetch_rss_feed(rss_url: str) -> list:
 
     except Exception as e:
         logging.error(f"RSSの取得またはパースに失敗しました ({rss_url}): {e}")
-    
+
     return articles
 
 # ==========================================
-# 6. コア：AI要約 ＆ HTML生成
+# 6. コア：AI要約 & HTML生成
 # ==========================================
 def run_article_generator(source_text: str, source_url: str, source_name: str) -> str:
     MAX_INPUT_LENGTH = 12000
@@ -145,8 +139,8 @@ def run_article_generator(source_text: str, source_url: str, source_name: str) -
     if not api_key:
         logging.error("環境変数 'GEMINI_API_KEY' が設定されていません。")
         return ""
-        
-    # 🔴 改善：最新SDKのClient方式へ移行（不要な括弧などのバグを完璧にクレンジング）
+
+    # ✅ 新ライブラリ: google-genai
     client = genai.Client(api_key=api_key)
     model_name = os.environ.get("GEMINI_MODEL", "gemini-2.0-flash")
 
@@ -166,18 +160,17 @@ def run_article_generator(source_text: str, source_url: str, source_name: str) -
 
     MAX_RETRIES = 3
     response_text = ""
-    
+
     for attempt in range(MAX_RETRIES):
         try:
             logging.info(f"Gemini API呼び出し中 (試行 {attempt + 1}/{MAX_RETRIES})...")
-            # 🔴 改善：最新SDKの generate_content 呼び出し構造とミリ秒指定タイムアウト
             response = client.models.generate_content(
                 model=model_name,
                 contents=prompt,
                 config=types.GenerateContentConfig(
                     response_mime_type="application/json",
                     response_schema=ArticleOutputSchema,
-                    http_options=types.HttpOptions(timeout=60000)  # ミリ秒指定
+                    http_options=types.HttpOptions(timeout=60000)
                 )
             )
             if response and response.text:
@@ -185,25 +178,26 @@ def run_article_generator(source_text: str, source_url: str, source_name: str) -
                 break
             else:
                 raise ValueError("APIレスポンスのテキストが空でした。")
-                
-        # 🔴 改善：最新SDKに対応した安全な統合型例外ハンドリング
         except Exception as e:
-            if "429" in str(e) or "RESOURCE_EXHAUSTED" in str(e):
-                logging.warning(f"APIレート制限（429）。{2 ** attempt}秒待機してリトライ...")
-                time.sleep(2 ** attempt)
-            elif "INVALID_ARGUMENT" in str(e):
+            err = str(e)
+            if "429" in err or "RESOURCE_EXHAUSTED" in err:
+                wait = 2 ** attempt
+                logging.warning(f"APIレート制限（429）。{wait}秒待機してリトライ...")
+                time.sleep(wait)
+            elif "INVALID_ARGUMENT" in err:
                 logging.error(f"プロンプト不正（回復不能なエラー）: {e}")
                 return ""
             else:
-                logging.warning(f"一時的なAPI接続失敗（試行 {attempt + 1}）: {str(e)}")
-                time.sleep(2 ** attempt)
+                wait = 2 ** attempt
+                logging.warning(f"一時的なAPI接続失敗（試行 {attempt + 1}）: {err}")
+                time.sleep(wait)
     else:
         logging.error("最大リトライ回数を超えたため、生成を中止しました。")
         return ""
 
     response_text = response_text.strip()
     response_text = re.sub(r"^```json\s*|\s*```$", "", response_text, flags=re.IGNORECASE).strip()
-    
+
     if not response_text.startswith("{"):
         logging.error(f"Geminiの出力がJSON形式ではありません: {response_text[:200]}")
         return ""
@@ -215,21 +209,18 @@ def run_article_generator(source_text: str, source_url: str, source_name: str) -
         logging.error(f"バリデーション失敗: {e}")
         return ""
 
-    # Pydantic v2モデル準拠
     article_dict = validated_data.model_dump()
     slug = sanitize_slug(article_dict["slug"])
 
-    # UUIDによるスラグ衝突の絶対防止
     output_html_path = os.path.join("articles", f"{slug}.html")
     if os.path.exists(output_html_path):
         suffix = uuid.uuid4().hex[:8]
         slug = f"{slug}-{suffix}"
         output_html_path = os.path.join("articles", f"{slug}.html")
-        article_dict["slug"] = slug  # 辞書内のデータも同期更新
+        article_dict["slug"] = slug
 
     output_json_path = os.path.join("data", f"{slug}.json")
 
-    # セキュリティ：XSSおよびインジェクション防御
     safe_data = {k: html.escape(str(v)) for k, v in article_dict.items() if k != "slug"}
     safe_source_url = html.escape(source_url)
     safe_source_name = html.escape(source_name)
@@ -238,7 +229,6 @@ def run_article_generator(source_text: str, source_url: str, source_name: str) -
     date_iso = now.strftime("%Y-%m-%dT%H:%M:%S+09:00")
     date_ja = now.strftime("%Y年%m月%d日 %H:%M")
 
-    # テンプレート読み込み＆置換（デグレ防止）
     template_path = "template_article.html"
     if not os.path.exists(template_path):
         logging.error(f"テンプレート '{template_path}' が見つかりません。")
@@ -268,9 +258,8 @@ def run_article_generator(source_text: str, source_url: str, source_name: str) -
         html_content = html_content.replace(placeholder, value)
 
     if "{{" in html_content:
-        logging.warning(f"警告：テンプレート内に未置換の変数（{{...}}）が残っている可能性があります。")
+        logging.warning("警告：テンプレート内に未置換の変数が残っている可能性があります。")
 
-    # ファイルの書き込み原子性（破損を完全に防止）
     try:
         tmp_html_path = output_html_path + ".tmp"
         tmp_json_path = output_json_path + ".tmp"
@@ -290,7 +279,7 @@ def run_article_generator(source_text: str, source_url: str, source_name: str) -
         return ""
 
 # ==========================================
-# 7. トップページ（index.html）自動書き換え ＆ 容量削減ローテーション削除
+# 7. index.html 自動書き換え & ローテーション削除
 # ==========================================
 def rebuild_index_and_rotate_storage():
     try:
@@ -302,38 +291,32 @@ def rebuild_index_and_rotate_storage():
             try:
                 with open(path, "r", encoding="utf-8") as f:
                     article_data = json.load(f)
-                    mtime = os.path.getmtime(path)
-                    all_articles.append((mtime, article_data))
+                mtime = os.path.getmtime(path)
+                all_articles.append((mtime, article_data))
             except Exception as e:
                 logging.error(f"JSON読み込み失敗 ({j_file}): {e}")
 
-        # 最新順にソート
         all_articles.sort(key=lambda x: x[0], reverse=True)
 
-        # 容量パンク防止のローテーション物理削除
         if len(all_articles) > MAX_ARTICLES_LIMIT:
             logging.info(f"記事数が上限（{MAX_ARTICLES_LIMIT}件）を超えたため、古いファイルを自動削除します。")
             to_delete = all_articles[MAX_ARTICLES_LIMIT:]
             all_articles = all_articles[:MAX_ARTICLES_LIMIT]
-
             for _, d_art in to_delete:
                 d_slug = sanitize_slug(d_art["slug"])
-                html_to_del = os.path.join("articles", f"{d_slug}.html")
-                json_to_del = os.path.join("data", f"{d_slug}.json")
+                for path in [
+                    os.path.join("articles", f"{d_slug}.html"),
+                    os.path.join("data", f"{d_slug}.json")
+                ]:
+                    if os.path.exists(path):
+                        os.remove(path)
+                logging.info(f"古い記事を削除しました: {d_slug}")
 
-                if os.path.exists(html_to_del):
-                    os.remove(html_to_del)
-                if os.path.exists(json_to_del):
-                    os.remove(json_to_del)
-                logging.info(f"古い記事ファイルを自動削除し、サーバー容量を解放しました: {d_slug}")
-
-        # 一覧HTML（カード）を生成
         articles_html = ""
         for _, art in all_articles:
             safe_title = html.escape(art["title"])
             safe_intro = html.escape(art["explanation_intro"])
             safe_slug = sanitize_slug(art["slug"])
-            
             articles_html += f"""
                 <article class="article-card fade-element">
                     <div class="article-meta">
@@ -348,47 +331,46 @@ def rebuild_index_and_rotate_storage():
 
         index_path = "index.html"
         if not os.path.exists(index_path):
-            logging.error(f"index.html が見つかりません。")
+            logging.error("index.html が見つかりません。")
             return
 
         with open(index_path, "r", encoding="utf-8") as f:
             index_content = f.read()
 
         if "<!-- ARTICLES_START -->" not in index_content or "<!-- ARTICLES_END -->" not in index_content:
-            logging.error("index.html 内に ARTICLES_START または ARTICLES_END のコメントタグが見つかりません。置換処理をスキップします。")
+            logging.error("index.html 内にARTICLES_START/ENDタグが見つかりません。")
             return
 
         pattern = re.compile(r"<!-- ARTICLES_START -->.*?<!-- ARTICLES_END -->", re.DOTALL)
         replacement_text = f"<!-- ARTICLES_START -->\n{articles_html}\n                <!-- ARTICLES_END -->"
         new_index_content = pattern.sub(replacement_text, index_content)
 
-        # index.html の書き込み原子性の維持
         tmp_index_path = index_path + ".tmp"
         with open(tmp_index_path, "w", encoding="utf-8") as f:
             f.write(new_index_content)
         os.replace(tmp_index_path, index_path)
-            
-        logging.info("index.html の最新記事一覧を全自動で更新しました。")
+
+        logging.info("index.html を更新しました。")
         print("✅ index.html の一覧更新およびローテーション削除が完了しました！")
 
     except Exception as e:
-        logging.error(f"index.html の更新中に致命的なエラーが発生しました: {e}")
+        logging.error(f"index.html の更新中にエラーが発生しました: {e}")
 
 # ==========================================
-# 8. オーケストレーター（24時間完全全自動監視・制御）
+# 8. オーケストレーター
 # ==========================================
 def main():
     RSS_FEEDS = [
         {"url": "https://blog.google/technology/ai/rss/", "name": "Google AI Blog"},
         {"url": "https://openai.com/news/rss.xml", "name": "OpenAI Blog"},
     ]
-    
+
     logging.info("--- 自動巡回タスクを開始します ---")
     history = load_history()
     processed_urls = {h["url"] for h in history if isinstance(h, dict) and "url" in h}
-    
+
     new_article_created = False
-    MAX_PROCESS_PER_RUN = 1  # 1回起動あたりのAPI最大消費制限
+    MAX_PROCESS_PER_RUN = 1
     processed_count = 0
 
     for feed in RSS_FEEDS:
@@ -403,28 +385,23 @@ def main():
             if processed_count >= MAX_PROCESS_PER_RUN:
                 break
 
-            # 重複チェックの高速判定
             if item["link"] in processed_urls:
                 continue
 
-            # 🔴 改善②＆最重要修正：descriptionが極端に薄い・短い場合はスキップして低品質記事化を100%防ぐ
             if not item["description"] or len(item["description"]) < 100:
-                logging.info(f"descriptionが短すぎるためスキップします (文字数: {len(item['description']) if item['description'] else 0}): {item['title']}")
-                
-                # 🔴 新機能：スキップされたURLも履歴（history.json）に永久に記録。
-                # これにより、以降 of Actionsが同じ記事を何度も取得して重複スキップを繰り返す無駄なループ、および無駄なログ汚れを100%防止します。
+                logging.info(f"descriptionが短すぎるためスキップ: {item['title']}")
                 history.append({
                     "url": item["link"],
                     "processed_at": datetime.now().isoformat(),
                     "status": "skipped",
                     "reason": "description_too_short"
                 })
-                processed_urls.add(item["link"])  # メモリ上のセットにも即時同期
+                processed_urls.add(item["link"])
                 continue
 
             logging.info(f"未処理の新着記事を検知（{feed['name']}）: {item['title']}")
             print(f"📡 新着記事を検知: {item['title']}")
-            
+
             slug = run_article_generator(
                 source_text=item["description"],
                 source_url=item["link"],
@@ -432,7 +409,6 @@ def main():
             )
 
             if slug:
-                # 新形式（メタデータ付き辞書型）で履歴へ記録
                 history.append({
                     "url": item["link"],
                     "processed_at": datetime.now().isoformat(),
@@ -440,12 +416,10 @@ def main():
                 })
                 processed_count += 1
                 new_article_created = True
-                time.sleep(5)  # API制限対策の間隔空け
+                time.sleep(5)
 
-    # 履歴を保存
     save_history(history)
 
-    # 1つでも新着記事が作られた場合のみ、更新 ＆ ローテーション削除を実行
     if new_article_created:
         rebuild_index_and_rotate_storage()
     else:
