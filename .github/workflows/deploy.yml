@@ -1,0 +1,26 @@
+name: Deploy to Lolipop
+
+on:
+  push:
+    branches:
+      - main  # mainブランチにファイルがコミット（保存）されたら自動実行します
+
+jobs:
+  web-deploy:
+    name: FTP Deploy
+    runs-on: ubuntu-latest
+    steps:
+      # 1. GitHub上の最新のコードを取得します
+      - name: Get latest code
+        uses: actions/checkout@v4
+
+      # 2. ロリポップサーバーにFTPでファイルを自動転送します
+      - name: Sync files to Lolipop
+        uses: SamKirkland/FTP-Deploy-Action@v4.4.0
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          # server-dir: ロリポップの公開フォルダ名（例: ./ai-example/ ）。
+          # ロリポップのFTPアカウントが直接サブドメインの公開フォルダに繋がっている場合は、./ のままでOKです
+          server-dir: ./ai-example/
