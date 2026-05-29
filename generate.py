@@ -9,6 +9,7 @@ from datetime import datetime
 import urllib.request
 import xml.etree.ElementTree as ET
 from pydantic import BaseModel, Field
+# 🔴 改善：レガシーなSDKから最新の google-genai SDKへ完全移行
 from google import genai
 from google.genai import types
 
@@ -144,16 +145,10 @@ def run_article_generator(source_text: str, source_url: str, source_name: str) -
     if not api_key:
         logging.error("環境変数 'GEMINI_API_KEY' が設定されていません。")
         return ""
-
-    genai.configure(api_key=api_key)
-    
+        
+    # 🔴 改善：最新SDKのClient方式へ移行（不要な括弧などのバグを完璧にクレンジング）
+    client = genai.Client(api_key=api_key)
     model_name = os.environ.get("GEMINI_MODEL", "gemini-2.0-flash")
-    model = genai.GenerativeModel(model_name)
-    
-    generation_config = {
-        "response_mime_type": "application/json",
-        "response_schema": ArticleOutputSchema
-    }
 
     prompt = f"""
     あなたは、「AI初心者でも直感的に理解できる」日本語コンテンツを作成する、日本最高レベルのAIニュース編集者です。
@@ -175,21 +170,33 @@ def run_article_generator(source_text: str, source_url: str, source_name: str) -
     for attempt in range(MAX_RETRIES):
         try:
             logging.info(f"Gemini API呼び出し中 (試行 {attempt + 1}/{MAX_RETRIES})...")
-            response = model.generate_content(prompt, generation_config=generation_config)
+            # 🔴 改善：最新SDKの generate_content 呼び出し構造とミリ秒指定タイムアウト
+            response = client.models.generate_content(
+                model=model_name,
+                contents=prompt,
+                config=types.GenerateContentConfig(
+                    response_mime_type="application/json",
+                    response_schema=ArticleOutputSchema,
+                    http_options=types.HttpOptions(timeout=60000)  # ミリ秒指定
+                )
+            )
             if response and response.text:
                 response_text = response.text
                 break
             else:
                 raise ValueError("APIレスポンスのテキストが空でした。")
-        except google_exceptions.ResourceExhausted:
-            logging.warning(f"APIレート制限（429）。{2 ** attempt}秒待機してリトライ...")
-            time.sleep(2 ** attempt)
-        except google_exceptions.InvalidArgument as e:
-            logging.error(f"プロンプト不正（回復不能なエラー）: {e}")
-            return ""
+                
+        # 🔴 改善：最新SDKに対応した安全な統合型例外ハンドリング
         except Exception as e:
-            logging.warning(f"一時的なAPI接続失敗（試行 {attempt + 1}）: {str(e)}")
-            time.sleep(2 ** attempt)
+            if "429" in str(e) or "RESOURCE_EXHAUSTED" in str(e):
+                logging.warning(f"APIレート制限（429）。{2 ** attempt}秒待機してリトライ...")
+                time.sleep(2 ** attempt)
+            elif "INVALID_ARGUMENT" in str(e):
+                logging.error(f"プロンプト不正（回復不能なエラー）: {e}")
+                return ""
+            else:
+                logging.warning(f"一時的なAPI接続失敗（試行 {attempt + 1}）: {str(e)}")
+                time.sleep(2 ** attempt)
     else:
         logging.error("最大リトライ回数を超えたため、生成を中止しました。")
         return ""
@@ -405,7 +412,7 @@ def main():
                 logging.info(f"descriptionが短すぎるためスキップします (文字数: {len(item['description']) if item['description'] else 0}): {item['title']}")
                 
                 # 🔴 新機能：スキップされたURLも履歴（history.json）に永久に記録。
-                # これにより、以降のActionsが同じ記事を何度も取得して重複スキップを繰り返す無駄なループ、および無駄なログ汚れを100%防止します。
+                # これにより、以降 of Actionsが同じ記事を何度も取得して重複スキップを繰り返す無駄なループ、および無駄なログ汚れを100%防止します。
                 history.append({
                     "url": item["link"],
                     "processed_at": datetime.now().isoformat(),
