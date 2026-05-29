@@ -33,7 +33,7 @@ jobs:
       - name: 記事の自動生成
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}  # 暗号鍵
-          GEMINI_MODEL: "gemini-2.0-flash"  # 🔴 改善⑥：ワークフローのここを書き換えるだけで、コードをいじらずにモデル変更が可能です
+          GEMINI_MODEL: "gemini-2.5-flash"  # 🔴 改善⑥：ワークフローのここを書き換えるだけで、コードをいじらずにモデル変更が可能です
         run: python generate.py
         continue-on-error: true  # ← この1行を追加
 
