@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{TITLE}} | AI Frontier Lab</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    
+    <meta name="robots" content="noindex, nofollow">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "NewsArticle",
+      "headline": "{{TITLE}}",
+      "datePublished": "{{DATE_ISO}}",
+      "author": {"@type": "Person", "name": "ちゃろ"}
+    }
+    </script>
+</head>
+<body>
+    <header class="site-header">
+        <div class="container header-inner">
+            <div class="header-left">
+                <h1 class="site-title"><a href="index.html">AI Frontier Lab</a></h1>
+                <nav class="main-nav">
+                    <ul>
+                        <li><a href="index.html">Latest</a></li>
+                        <li><a href="#">Archive</a></li>
+                    </ul>
+                </nav>
+            </div>
+            <button id="theme-toggle" aria-label="テーマ切り替え">
+                <svg id="moon-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                <svg id="sun-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+            </button>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- メイン記事 (全自動コンパイル置換対象) -->
+        <article class="post fade-element">
+            <div class="post-meta">
+                <time datetime="{{DATE_ISO}}">{{DATE_JA}}</time>
+                <span class="tag">最新ニュース</span>
+                <a href="{{SOURCE_URL}}" class="source-link" target="_blank">情報ソース: {{SOURCE_NAME}}</a>
+            </div>
+            
+            <h2 class="post-title">{{TITLE}}</h2>
+
+            <section class="summary-card">
+                <h3>📌 3行まとめ（結論）</h3>
+                <ul>
+                    <li>{{SUMMARY_1}}</li>
+                    <li>{{SUMMARY_2}}</li>
+                    <li>{{SUMMARY_3}}</li>
+                </ul>
+                <button class="toggle-button text-toggle" data-close-text="🔍 3行まとめのさらに詳しい解説を読む" data-open-text="▲ 詳しい解説を閉じる">🔍 3行まとめのさらに詳しい解説を読む</button>
+                <div class="toggle-content">
+                    <div class="summary-detail">
+                        <h4>さらに詳しく知りたい方へ</h4>
+                        <p>{{SUMMARY_DETAIL}}</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="content-section">
+                <h3>💡 つまり、どういうこと？（初心者向け解説）</h3>
+                <p>{{EXPLANATION_INTRO}}</p>
+                <button class="toggle-button" data-close-text="📖 つまり？ の続きを詳しく読む" data-open-text="▲ 閉じる">📖 つまり？ の続きを詳しく読む</button>
+                <div class="toggle-content">
+                    <p>{{EXPLANATION_FULL}}</p>
+                </div>
+            </section>
+
+            <section class="action-section">
+                <h3>🚀 あなたはどう活かすべき？（実用アクション）</h3>
+                <div class="action-box">
+                    <h4>一般ユーザーへの影響とおすすめ</h4>
+                    <ul>
+                        <li>{{ACTION_1}}</li>
+                        <li>{{ACTION_2}}</li>
+                    </ul>
+                </div>
+            </section>
+        </article>
+
+        <!-- 関連記事カードセクション (最新記事一覧) -->
+        <section class="articles-grid fade-element">
+            <h3 class="grid-title">最新のAIニュース一覧</h3>
+            <div class="grid-container">
+                <!-- 🔴 ここに2番目以降のニュース一覧が差し込まれます -->
+                {{ARTICLES_GRID}}
+            </div>
+        </section>
+
+        <!-- 初心者向けセクション (その場でQ&Aがアコーディオン展開される) -->
+        <section class="beginner-section fade-element" id="beginner">
+            <div class="beginner-box">
+                <span class="section-mini">BEGINNER GUIDE</span>
+                <h2>AI初心者でも、<br>置いていかれないために。</h2>
+                <p>ChatGPTとは？ Claudeとの違いは？ AIは何に使える？<br>そんな日常の小さな疑問を、その場でシンプルに解決します。</p>
+                <button class="toggle-button primary-button" data-close-text="📖 初心者ガイドを見る" data-open-text="▲ ガイドを閉じる">📖 初心者ガイドを見る</button>
+                <div class="toggle-content beginner-guide-content">
+                    <div class="qna-item">
+                        <h4>Q. ChatGPTとは？</h4>
+                        <p>OpenAI社が開発した、人間と話しているかのように自然に対話ができるAIアシスタントです。文章の作成やプログラミング、日常の素朴な疑問への回答まで何でもこなせます。</p>
+                    </div>
+                    <div class="qna-item">
+                        <h4>Q. Claude（クロード）とは？</h4>
+                        <p>Anthropic社が開発したAIです。ChatGPTと比べて、特に長文を正確に読み解く力や、人間の感情に寄り添った自然で知的な日本語を作成する能力に優れています。</p>
+                    </div>
+                    <div class="qna-item">
+                        <h4>Q. AIって実際何に使えるの？</h4>
+                        <p>ビジネスメールの自動作成、長文PDF資料の要約、旅行の計画、プログラミング学習のサポートなど、まるで「何でも知っている頼れる相棒」が24時間いつでも手伝ってくれる感覚で活用できます。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer fade-element">
+        <div class="container">
+            <p>&copy; 2026 AI Frontier Lab. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
