@@ -81,9 +81,26 @@ a:hover { text-decoration: underline; }
 
 .content-section, .action-section { margin-bottom: 50px; }
 .content-section h3, .action-section h3 { font-size: 1.4rem; margin-bottom: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
-.action-box { background-color: rgba(0, 112, 243, 0.05); border-left: 4px solid var(--accent-color); padding: 24px; border-radius: 0 8px 8px 0; }
+
+/* アクションボックス（改善） */
+.action-box { 
+    background-color: rgba(0, 112, 243, 0.05); 
+    border-left: 4px solid var(--accent-color); 
+    padding: 24px; 
+    border-radius: 0 8px 8px 0; 
+}
 [data-theme="dark"] .action-box { background-color: rgba(50, 145, 255, 0.1); }
+.action-box h4 { margin-bottom: 16px; }
 .action-box ul { padding-left: 20px; margin-top: 16px; }
+
+/* 🔴 改善⑤：実践アクション項目に美しい空行（24px）を設け、文字を格段に読みやすく改善 */
+.action-box ul li {
+    margin-bottom: 24px; 
+    line-height: 1.8;
+}
+.action-box ul li:last-child {
+    margin-bottom: 0;
+}
 
 /* インタラクティブ・トグル（アコーディオン）UI設計 */
 .toggle-button {
@@ -103,7 +120,6 @@ a:hover { text-decoration: underline; }
     opacity: 0.85;
     transform: translateY(-1px);
 }
-/* テキスト風のスッキリしたボタン（まとめのディテール展開用） */
 .toggle-button.text-toggle {
     background: transparent;
     color: var(--text-muted);
@@ -116,7 +132,7 @@ a:hover { text-decoration: underline; }
     color: var(--text-color);
 }
 
-/* スムーズに広がりフェードインするコンテンツ領域 */
+/* なめらか展開コンテンツ領域 */
 .toggle-content {
     max-height: 0;
     overflow: hidden;
@@ -125,12 +141,11 @@ a:hover { text-decoration: underline; }
     margin-top: 0;
 }
 .toggle-content.open {
-    max-height: 1200px; /* 十分に展開可能な高さ */
+    max-height: 1200px; 
     opacity: 1;
     margin-top: 20px;
 }
 
-/* 展開される各詳細コンテンツ内のスタイル */
 .summary-detail {
     border-top: 1px solid var(--border-color);
     padding-top: 20px;
