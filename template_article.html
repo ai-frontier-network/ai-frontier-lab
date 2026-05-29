@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
     <title>{{TITLE}} | AI Frontier Lab</title>
-    <link rel="stylesheet" href="style.css">
+    <!-- 🔴 改善③：1つ上の階層のCSSを正しく指し示すようにパスを ../style.css に修正 -->
+    <link rel="stylesheet" href="../style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
@@ -17,7 +18,7 @@
       "@type": "NewsArticle",
       "headline": "{{TITLE}}",
       "datePublished": "{{DATE_ISO}}",
-      "author": {"@type": "Person", "name": "ココロ"}
+      "author": {"@type": "Person", "name": "ちゃろ"}
     }
     </script>
 </head>
@@ -25,11 +26,12 @@
     <header class="site-header">
         <div class="container header-inner">
             <div class="header-left">
-                <h1 class="site-title"><a href="index.html">AI Frontier Lab</a></h1>
+                <!-- 🔴 改善④：個別記事からトップ・アーカイブに戻るリンクを ../ に修正して完璧に機能化 -->
+                <h1 class="site-title"><a href="../index.html">AI Frontier Lab</a></h1>
                 <nav class="main-nav">
                     <ul>
-                        <li><a href="index.html">Latest</a></li>
-                        <li><a href="#">Archive</a></li>
+                        <li><a href="../index.html">Latest</a></li>
+                        <li><a href="../archive.html">Archive</a></li>
                     </ul>
                 </nav>
             </div>
@@ -45,6 +47,7 @@
             <div class="post-meta">
                 <time datetime="{{DATE_ISO}}">{{DATE_JA}}</time>
                 <span class="tag">AI速報</span>
+                <!-- 🔴 改善④：情報ソースへの正式なリンクの機能化 -->
                 <a href="{{SOURCE_URL}}" class="source-link" target="_blank" rel="noopener">情報ソース: {{SOURCE_NAME}}</a>
             </div>
             
@@ -108,7 +111,7 @@
                     </div>
                     <div class="qna-item">
                         <h4>Q. AIって実際何に使えるの？</h4>
-                        <p>ビジネスメールの自動作成、長文PDF資料の要約、旅行の計画、プログラミング学習のサポートなど、まるで「何でも知っている頼れる相棒」が24時間いつでも手伝ってくれる感覚で活用できます。</p>
+                        <p>ビジネスメールの自動作成、長文PDF資料の要約、旅行の計画、プログラミング学習 of サポートなど、まるで「何でも知っている頼れる相棒」が24時間いつでも手伝ってくれる感覚で活用できます。</p>
                     </div>
                 </div>
             </div>
@@ -121,6 +124,7 @@
         </div>
     </footer>
 
-    <script src="script.js"></script>
+    <!-- 🔴 改善③：1つ上の階層のJSを正しく指し示すようにパスを ../script.js に修正 -->
+    <script src="../script.js"></script>
 </body>
 </html>
