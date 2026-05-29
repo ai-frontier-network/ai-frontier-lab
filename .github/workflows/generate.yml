@@ -26,8 +26,9 @@ jobs:
         with:
           python-version: '3.11'  # 🔴 タイポを完璧に修正しました！
 
+      # 🔴 最新の google-genai ライブラリに変更
       - name: 依存パッケージのインストール
-        run: pip install google-generativeai pydantic
+        run: pip install google-genai pydantic
 
       - name: 記事の自動生成
         env:
@@ -52,4 +53,3 @@ jobs:
           name: app-log-${{ github.run_id }}
           path: logs/app.log
           retention-days: 30
-
