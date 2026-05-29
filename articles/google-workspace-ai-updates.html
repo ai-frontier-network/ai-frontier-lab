@@ -2,9 +2,10 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
     <title>Gmailなどで音声操作が可能に、新デザインツールも登場 | AI Frontier Lab</title>
-    <link rel="stylesheet" href="style.css">
+    <!-- 🔴 改善③：1つ上の階層のCSSを正しく指し示すようにパスを ../style.css に修正 -->
+    <link rel="stylesheet" href="../style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
@@ -16,7 +17,7 @@
       "@context": "https://schema.org",
       "@type": "NewsArticle",
       "headline": "Gmailなどで音声操作が可能に、新デザインツールも登場",
-      "datePublished": "2026-05-29T11:17:33+09:00",
+      "datePublished": "2026-05-29T11:17:28+09:00",
       "author": {"@type": "Person", "name": "ちゃろ"}
     }
     </script>
@@ -25,12 +26,12 @@
     <header class="site-header">
         <div class="container header-inner">
             <div class="header-left">
-                <!-- 🔴 改善④：Latest、Archiveリンクを完璧に機能化 -->
-                <h1 class="site-title"><a href="index.html">AI Frontier Lab</a></h1>
+                <!-- 🔴 改善④：個別記事からトップ・アーカイブに戻るリンクを ../ に修正して完璧に機能化 -->
+                <h1 class="site-title"><a href="../index.html">AI Frontier Lab</a></h1>
                 <nav class="main-nav">
                     <ul>
-                        <li><a href="index.html">Latest</a></li>
-                        <li><a href="archive.html">Archive</a></li>
+                        <li><a href="../index.html">Latest</a></li>
+                        <li><a href="../archive.html">Archive</a></li>
                     </ul>
                 </nav>
             </div>
@@ -42,17 +43,17 @@
     </header>
 
     <main class="container">
-        <!-- メイン記事 (全自動コンパイル置換対象) -->
         <article class="post fade-element">
             <div class="post-meta">
-                <time datetime="2026-05-29T11:17:33+09:00">2026年05月29日 11:17</time>
-                <span class="tag">最新ニュース</span>
-                <!-- 🔴 改善④：トップのヒーロー記事でも情報ソースが完璧に動くように機能化 -->
-                <a href="https://blog.google/products-and-platforms/products/workspace/workspace-updates/" class="source-link" target="_blank">情報ソース: Google AI Blog</a>
+                <time datetime="2026-05-29T11:17:28+09:00">2026年05月29日 11:17</time>
+                <span class="tag">AI速報</span>
+                <!-- 🔴 改善④：情報ソースへの正式なリンクの機能化 -->
+                <a href="https://blog.google/products-and-platforms/products/workspace/workspace-updates/" class="source-link" target="_blank" rel="noopener">情報ソース: Google AI Blog</a>
             </div>
             
             <h2 class="post-title">Gmailなどで音声操作が可能に、新デザインツールも登場</h2>
 
+            <!-- 第一層：3行まとめ（結論 ＆ 詳細展開） -->
             <section class="summary-card">
                 <h3>📌 3行まとめ（結論）</h3>
                 <ul>
@@ -69,6 +70,7 @@
                 </div>
             </section>
 
+            <!-- 第二層：初心者向け解説（展開式） -->
             <section class="content-section">
                 <h3>💡 つまり、どういうこと？（初心者向け解説）</h3>
                 <p>Googleのツールが、まるで秘書のように賢くなります！</p>
@@ -78,6 +80,7 @@
                 </div>
             </section>
 
+            <!-- 第三層：実用アクション -->
             <section class="action-section">
                 <h3>🚀 あなたはどう活かすべき？（実用アクション）</h3>
                 <div class="action-box">
@@ -90,86 +93,7 @@
             </section>
         </article>
 
-        <!-- 関連記事カードセクション (最新記事一覧) -->
-        <section class="articles-grid fade-element">
-            <h3 class="grid-title">最新のAIニュース一覧</h3>
-            <div class="grid-container">
-                <!-- 🔴 ここに2番目以降のニュース一覧が差し込まれます -->
-                
-                <article class="article-card fade-element">
-                    <div class="article-meta">
-                        <span>AI News</span>
-                        <span>Latest Release</span>
-                    </div>
-                    <h3>ハイブリッド会議がよりリアルに、一体感アップを実現</h3>
-                    <p>リモート会議の「なんだか遠い感じ」がなくなるかも？</p>
-                    <a href="articles/hybrid-meeting-real-presence.html">続きを読む &rarr;</a>
-                </article>
-            
-                <article class="article-card fade-element">
-                    <div class="article-meta">
-                        <span>AI News</span>
-                        <span>Latest Release</span>
-                    </div>
-                    <h3>AIや量子など未来技術の対話、主要論点が明らかに</h3>
-                    <p>未来の技術がどうなるか、知りたいと思いませんか？</p>
-                    <a href="articles/io-dialogues-future-tech.html">続きを読む &rarr;</a>
-                </article>
-            
-                <article class="article-card fade-element">
-                    <div class="article-meta">
-                        <span>AI News</span>
-                        <span>Latest Release</span>
-                    </div>
-                    <h3>Google I/O 2026の主要発表が一挙公開！</h3>
-                    <p>Googleの最新技術が集まるお祭り「Google I/O」とは？</p>
-                    <a href="articles/google-io-2026-announcements.html">続きを読む &rarr;</a>
-                </article>
-            
-                <article class="article-card fade-element">
-                    <div class="article-meta">
-                        <span>AI News</span>
-                        <span>Latest Release</span>
-                    </div>
-                    <h3>Google I/O 2026で最新AI登場、Gemini進化が明らかに</h3>
-                    <p>最新のAIが私たちの生活をどう変えるか知りたいですか？</p>
-                    <a href="articles/google-io-2026-gemini-ai.html">続きを読む &rarr;</a>
-                </article>
-            
-                <article class="article-card fade-element">
-                    <div class="article-meta">
-                        <span>AI News</span>
-                        <span>Latest Release</span>
-                    </div>
-                    <h3>次世代の働き方とエネルギーに投資、未来を構築</h3>
-                    <p>社会が大きく変わる中で、私たちがどんな準備をしているか知りたいですか？</p>
-                    <a href="articles/workforce-energy-investment.html">続きを読む &rarr;</a>
-                </article>
-            
-                <article class="article-card fade-element">
-                    <div class="article-meta">
-                        <span>AI News</span>
-                        <span>Latest Release</span>
-                    </div>
-                    <h3>Google I/O 2026開催！AIがより身近に進化</h3>
-                    <p>AIがみんなのために、もっと便利になるニュースです！</p>
-                    <a href="articles/google-io-2026-ai-update.html">続きを読む &rarr;</a>
-                </article>
-            
-                <article class="article-card fade-element">
-                    <div class="article-meta">
-                        <span>AI News</span>
-                        <span>Latest Release</span>
-                    </div>
-                    <h3>「AI Mode」の利用で検索がより自然な会話に進化</h3>
-                    <p>いつもの検索が、まるで誰かと話すように変わっていく。</p>
-                    <a href="articles/ai-mode-natural-queries.html">続きを読む &rarr;</a>
-                </article>
-            
-            </div>
-        </section>
-
-        <!-- 初心者向けセクション (その場でQ&Aがアコーディオン展開される) -->
+        <!-- 初心者向けセクション -->
         <section class="beginner-section fade-element" id="beginner">
             <div class="beginner-box">
                 <span class="section-mini">BEGINNER GUIDE</span>
@@ -187,7 +111,7 @@
                     </div>
                     <div class="qna-item">
                         <h4>Q. AIって実際何に使えるの？</h4>
-                        <p>ビジネスメールの自動作成、長文PDF資料の要約、旅行の計画、プログラミング学習のサポートなど、まるで「何でも知っている頼れる相棒」が24時間いつでも手伝ってくれる感覚で活用できます。</p>
+                        <p>ビジネスメールの自動作成、長文PDF資料の要約、旅行の計画、プログラミング学習 of サポートなど、まるで「何でも知っている頼れる相棒」が24時間いつでも手伝ってくれる感覚で活用できます。</p>
                     </div>
                 </div>
             </div>
@@ -200,6 +124,7 @@
         </div>
     </footer>
 
-    <script src="script.js"></script>
+    <!-- 🔴 改善③：1つ上の階層のJSを正しく指し示すようにパスを ../script.js に修正 -->
+    <script src="../script.js"></script>
 </body>
 </html>
