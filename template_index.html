@@ -25,11 +25,12 @@
     <header class="site-header">
         <div class="container header-inner">
             <div class="header-left">
+                <!-- 🔴 改善④：Latest、Archiveリンクを完璧に機能化 -->
                 <h1 class="site-title"><a href="index.html">AI Frontier Lab</a></h1>
                 <nav class="main-nav">
                     <ul>
                         <li><a href="index.html">Latest</a></li>
-                        <li><a href="#">Archive</a></li>
+                        <li><a href="archive.html">Archive</a></li>
                     </ul>
                 </nav>
             </div>
@@ -46,6 +47,7 @@
             <div class="post-meta">
                 <time datetime="{{DATE_ISO}}">{{DATE_JA}}</time>
                 <span class="tag">最新ニュース</span>
+                <!-- 🔴 改善④：トップのヒーロー記事でも情報ソースが完璧に動くように機能化 -->
                 <a href="{{SOURCE_URL}}" class="source-link" target="_blank">情報ソース: {{SOURCE_NAME}}</a>
             </div>
             
