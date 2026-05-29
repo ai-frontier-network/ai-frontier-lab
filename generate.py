@@ -282,7 +282,7 @@ def run_article_generator(source_text: str, source_url: str, source_name: str) -
         return ""
 
 # ==========================================
-# 7. index.html 自動書き換え & ローテーション削除
+# 7. トップページ（index.html）自動書き換え ＆ 容量削減ローテーション削除
 # ==========================================
 def rebuild_index_and_rotate_storage():
     try:
@@ -294,32 +294,126 @@ def rebuild_index_and_rotate_storage():
             try:
                 with open(path, "r", encoding="utf-8") as f:
                     article_data = json.load(f)
-                mtime = os.path.getmtime(path)
-                all_articles.append((mtime, article_data))
+                    mtime = os.path.getmtime(path)
+                    all_articles.append((mtime, article_data))
             except Exception as e:
                 logging.error(f"JSON読み込み失敗 ({j_file}): {e}")
 
+        # 最新順にソート（更新時間が新しい順）
         all_articles.sort(key=lambda x: x[0], reverse=True)
 
+        # 容量パンク防止のローテーション物理削除
         if len(all_articles) > MAX_ARTICLES_LIMIT:
             logging.info(f"記事数が上限（{MAX_ARTICLES_LIMIT}件）を超えたため、古いファイルを自動削除します。")
             to_delete = all_articles[MAX_ARTICLES_LIMIT:]
             all_articles = all_articles[:MAX_ARTICLES_LIMIT]
+
             for _, d_art in to_delete:
                 d_slug = sanitize_slug(d_art["slug"])
-                for path in [
-                    os.path.join("articles", f"{d_slug}.html"),
-                    os.path.join("data", f"{d_slug}.json")
-                ]:
-                    if os.path.exists(path):
-                        os.remove(path)
-                logging.info(f"古い記事を削除しました: {d_slug}")
+                html_to_del = os.path.join("articles", f"{d_slug}.html")
+                json_to_del = os.path.join("data", f"{d_slug}.json")
 
+                if os.path.exists(html_to_del):
+                    os.remove(html_to_del)
+                if os.path.exists(json_to_del):
+                    os.remove(json_to_del)
+                logging.info(f"古い記事ファイルを自動削除し、サーバー容量を解放しました: {d_slug}")
+
+        index_path = "index.html"
+        if not os.path.exists(index_path):
+            logging.error("index.html が見つかりません。")
+            return
+
+        with open(index_path, "r", encoding="utf-8") as f:
+            index_content = f.read()
+
+        # index.html の目印存在チェック（デグレ防止）
+        if "<!-- ARTICLES_START -->" not in index_content or "<!-- ARTICLES_END -->" not in index_content:
+            logging.error("index.html 内に ARTICLES_START または ARTICLES_END のコメントタグが見つかりません。置換処理をスキップします。")
+            return
+
+        if "<!-- HERO_ARTICLE_START -->" not in index_content or "<!-- HERO_ARTICLE_END -->" not in index_content:
+            logging.error("index.html 内に HERO_ARTICLE_START または HERO_ARTICLE_END のコメントタグが見つかりません。置換処理をスキップします。")
+            return
+
+        # 1. もし記事データがまだ1件も生成されていない場合、デフォルト表示にする
+        if not all_articles:
+            logging.info("データフォルダが空のため、一覧の更新を保留します。")
+            return
+
+        # 2. ヒーロー記事（最新の1位）のHTMLを自動生成
+        _, hero_art = all_articles[0]
+        safe_hero_title = html.escape(hero_art["title"])
+        safe_hero_sum1 = html.escape(hero_art["summary_1"])
+        safe_hero_sum2 = html.escape(hero_art["summary_2"])
+        safe_hero_sum3 = html.escape(hero_art["summary_3"])
+        safe_hero_detail = html.escape(hero_art["summary_detail"])
+        safe_hero_intro = html.escape(hero_art["explanation_intro"])
+        safe_hero_full = html.escape(hero_art["explanation_full"])
+        safe_hero_action1 = html.escape(hero_art["action_1"])
+        safe_hero_action2 = html.escape(hero_art["action_2"])
+        safe_hero_url = html.escape(hero_art.get("source_url", "#"))
+        safe_hero_name = html.escape(hero_art.get("source_name", "ソース"))
+        
+        # テンプレート読み込み日時を基にした、美しいフォーマット日付
+        hero_date_ja = datetime.now().strftime("%Y年%m月%d日 %H:%M")
+
+        hero_html = f"""<!-- HERO_ARTICLE_START -->
+        <article class="post fade-element">
+            <div class="post-meta">
+                <time datetime="{datetime.now().strftime('%Y-%m-%dT%H:%M:%S+09:00')}">{hero_date_ja}</time>
+                <span class="tag">最新ニュース</span>
+                <a href="{safe_hero_url}" class="source-link" target="_blank">情報ソース: {safe_source_name}</a>
+            </div>
+            
+            <h2 class="post-title">{safe_hero_title}</h2>
+
+            <section class="summary-card">
+                <h3>📌 3行まとめ（結論）</h3>
+                <ul>
+                    <li>{safe_hero_sum1}</li>
+                    <li>{safe_hero_sum2}</li>
+                    <li>{safe_hero_sum3}</li>
+                </ul>
+                <button class="toggle-button text-toggle" data-close-text="🔍 3行まとめのさらに詳しい解説を読む" data-open-text="▲ 詳しい解説を閉じる">🔍 3行まとめのさらに詳しい解説を読む</button>
+                <div class="toggle-content">
+                    <div class="summary-detail">
+                        <h4>さらに詳しく知りたい方へ</h4>
+                        <p>{safe_hero_detail}</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="content-section">
+                <h3>💡 つまり、どういうこと？（初心者向け解説）</h3>
+                <p>{safe_hero_intro}</p>
+                <button class="toggle-button" data-close-text="📖 つまり？ の続きを詳しく読む" data-open-text="▲ 閉じる">📖 つまり？ の続きを詳しく読む</button>
+                <div class="toggle-content">
+                    <p>{safe_hero_full}</p>
+                </div>
+            </section>
+
+            <section class="action-section">
+                <h3>🚀 あなたはどう活かすべき？（実用アクション）</h3>
+                <div class="action-box">
+                    <h4>一般ユーザーへの影響とおすすめ</h4>
+                    <ul>
+                        <li>{safe_hero_action1}</li>
+                        <li>{safe_hero_action2}</li>
+                    </ul>
+                </div>
+            </section>
+        </article>
+<!-- HERO_ARTICLE_END -->"""
+
+        # 3. 2番目以降の古い記事（2位〜最大30位）をグリッド用のカードに変換
+        grid_articles = all_articles[1:]
         articles_html = ""
-        for _, art in all_articles:
+        for _, art in grid_articles:
             safe_title = html.escape(art["title"])
             safe_intro = html.escape(art["explanation_intro"])
             safe_slug = sanitize_slug(art["slug"])
+            
             articles_html += f"""
                 <article class="article-card fade-element">
                     <div class="article-meta">
@@ -332,32 +426,24 @@ def rebuild_index_and_rotate_storage():
                 </article>
             """
 
-        index_path = "index.html"
-        if not os.path.exists(index_path):
-            logging.error("index.html が見つかりません。")
-            return
+        # index.html のヒーロー記事とグリッド一覧を同時に一括置換
+        hero_pattern = re.compile(r"<!-- HERO_ARTICLE_START -->.*?<!-- HERO_ARTICLE_END -->", re.DOTALL)
+        grid_pattern = re.compile(r"<!-- ARTICLES_START -->.*?<!-- ARTICLES_END -->", re.DOTALL)
 
-        with open(index_path, "r", encoding="utf-8") as f:
-            index_content = f.read()
+        new_index_content = hero_pattern.sub(hero_html, index_content)
+        new_index_content = grid_pattern.sub(f"<!-- ARTICLES_START -->\n{articles_html}\n                <!-- ARTICLES_END -->", new_index_content)
 
-        if "<!-- ARTICLES_START -->" not in index_content or "<!-- ARTICLES_END -->" not in index_content:
-            logging.error("index.html 内にARTICLES_START/ENDタグが見つかりません。")
-            return
-
-        pattern = re.compile(r"<!-- ARTICLES_START -->.*?<!-- ARTICLES_END -->", re.DOTALL)
-        replacement_text = f"<!-- ARTICLES_START -->\n{articles_html}\n                <!-- ARTICLES_END -->"
-        new_index_content = pattern.sub(replacement_text, index_content)
-
+        # 原子性を維持した保存
         tmp_index_path = index_path + ".tmp"
         with open(tmp_index_path, "w", encoding="utf-8") as f:
             f.write(new_index_content)
         os.replace(tmp_index_path, index_path)
-
-        logging.info("index.html を更新しました。")
-        print("✅ index.html の一覧更新およびローテーション削除が完了しました！")
+            
+        logging.info("index.html のトップ（ヒーロー）および一覧を全自動で更新しました。")
+        print("✅ index.html のヒーロー・一覧更新およびローテーション削除が完了しました！")
 
     except Exception as e:
-        logging.error(f"index.html の更新中にエラーが発生しました: {e}")
+        logging.error(f"index.html の更新中に致命的なエラーが発生しました: {e}")
 
 # ==========================================
 # 8. オーケストレーター
