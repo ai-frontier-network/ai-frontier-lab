@@ -278,9 +278,10 @@ def run_article_generator(source_text: str, source_url: str, source_name: str) -
         return ""
 
 # ==========================================
-# 7. index.html 自動書き換え & ローテーション削除
+# 7. template_index.html を基にした index.html 完全自動コンパイル（SSG方式）
 # ==========================================
 def rebuild_index_and_rotate_storage():
+    """template_index.html を読み込み、最新記事を流し込んで index.html を全自動生成する"""
     try:
         json_files = [f for f in os.listdir("data") if f.endswith(".json")]
         all_articles = []
@@ -295,8 +296,10 @@ def rebuild_index_and_rotate_storage():
             except Exception as e:
                 logging.error(f"JSON読み込み失敗 ({j_file}): {e}")
 
+        # 最新順にソート（更新時間が新しい順）
         all_articles.sort(key=lambda x: x[0], reverse=True)
 
+        # 容量パンク防止のローテーション物理削除
         if len(all_articles) > MAX_ARTICLES_LIMIT:
             logging.info(f"記事数が上限（{MAX_ARTICLES_LIMIT}件）を超えたため、古いファイルを自動削除します。")
             to_delete = all_articles[MAX_ARTICLES_LIMIT:]
@@ -311,12 +314,21 @@ def rebuild_index_and_rotate_storage():
                         os.remove(path)
                 logging.info(f"古い記事を削除しました: {d_slug}")
 
-        # 1. もし記事データがまだ1件も生成されていない場合、デフォルト表示にする
+        # 🔴 改善：template_index.html を安全に読み込んでビルドする
+        template_index_path = "template_index.html"
+        if not os.path.exists(template_index_path):
+            logging.error("template_index.html が見つかりません。")
+            return
+
+        with open(template_index_path, "r", encoding="utf-8") as f:
+            index_template_content = f.read()
+
+        # もし記事データがまだ1件も生成されていない場合、デフォルト表示にする
         if not all_articles:
             logging.info("データフォルダが空のため、一覧の更新を保留します。")
             return
 
-        # 2. ヒーロー記事（最新の1位）のHTMLを自動生成
+        # 1. ヒーロー記事（最新の1位）のデータを取得してエスケープ
         _, hero_art = all_articles[0]
         safe_hero_title = html.escape(hero_art["title"])
         safe_hero_sum1 = html.escape(hero_art["summary_1"])
@@ -328,60 +340,12 @@ def rebuild_index_and_rotate_storage():
         safe_hero_action1 = html.escape(hero_art["action_1"])
         safe_hero_action2 = html.escape(hero_art["action_2"])
         safe_hero_url = html.escape(hero_art.get("source_url", "#"))
-        # 🔴 改善：safe_source_nameではなく正しい変数名「safe_hero_name」に修正してNameErrorを完全解消！
         safe_hero_name = html.escape(hero_art.get("source_name", "ソース"))
         
         hero_date_ja = datetime.now().strftime("%Y年%m月%d日 %H:%M")
+        hero_date_iso = datetime.now().strftime("%Y-%m-%dT%H:%M:%S+09:00")
 
-        hero_html = f"""<!-- HERO_ARTICLE_START -->
-        <article class="post fade-element">
-            <div class="post-meta">
-                <time datetime="{datetime.now().strftime('%Y-%m-%dT%H:%M:%S+09:00')}">{hero_date_ja}</time>
-                <span class="tag">最新ニュース</span>
-                <a href="{safe_hero_url}" class="source-link" target="_blank">情報ソース: {safe_hero_name}</a>
-            </div>
-            
-            <h2 class="post-title">{safe_hero_title}</h2>
-
-            <section class="summary-card">
-                <h3>📌 3行まとめ（結論）</h3>
-                <ul>
-                    <li>{safe_hero_sum1}</li>
-                    <li>{safe_hero_sum2}</li>
-                    <li>{safe_hero_sum3}</li>
-                </ul>
-                <button class="toggle-button text-toggle" data-close-text="🔍 3行まとめのさらに詳しい解説を読む" data-open-text="▲ 詳しい解説を閉じる">🔍 3行まとめのさらに詳しい解説を読む</button>
-                <div class="toggle-content">
-                    <div class="summary-detail">
-                        <h4>さらに詳しく知りたい方へ</h4>
-                        <p>{safe_hero_detail}</p>
-                    </div>
-                </div>
-            </section>
-
-            <section class="content-section">
-                <h3>💡 つまり、どういうこと？（初心者向け解説）</h3>
-                <p>{safe_hero_intro}</p>
-                <button class="toggle-button" data-close-text="📖 つまり？ の続きを詳しく読む" data-open-text="▲ 閉じる">📖 つまり？ の続きを詳しく読む</button>
-                <div class="toggle-content">
-                    <p>{safe_hero_full}</p>
-                </div>
-            </section>
-
-            <section class="action-section">
-                <h3>🚀 あなたはどう活かすべき？（実用アクション）</h3>
-                <div class="action-box">
-                    <h4>一般ユーザーへの影響とおすすめ</h4>
-                    <ul>
-                        <li>{safe_hero_action1}</li>
-                        <li>{safe_hero_action2}</li>
-                    </ul>
-                </div>
-            </section>
-        </article>
-<!-- HERO_ARTICLE_END -->"""
-
-        # 3. 2番目以降の古い記事（2位〜最大30位）をグリッド用のカードに変換
+        # 2. 2番目以降の古い記事（2位〜最大30位）をグリッド用のカードに変換
         grid_articles = all_articles[1:]
         articles_html = ""
         for _, art in grid_articles:
@@ -401,38 +365,35 @@ def rebuild_index_and_rotate_storage():
                 </article>
             """
 
+        # 🔴 改善：template_index.html のすべての変数を、安全に一括置換！
+        index_content = index_template_content
+        index_content = index_content.replace("{{TITLE}}", safe_hero_title)
+        index_content = index_content.replace("{{DATE_ISO}}", hero_date_iso)
+        index_content = index_content.replace("{{DATE_JA}}", hero_date_ja)
+        index_content = index_content.replace("{{SOURCE_URL}}", safe_hero_url)
+        index_content = index_content.replace("{{SOURCE_NAME}}", safe_hero_name)
+        index_content = index_content.replace("{{SUMMARY_1}}", safe_hero_sum1)
+        index_content = index_content.replace("{{SUMMARY_2}}", safe_hero_sum2)
+        index_content = index_content.replace("{{SUMMARY_3}}", safe_hero_sum3)
+        index_content = index_content.replace("{{SUMMARY_DETAIL}}", safe_hero_detail)
+        index_content = index_content.replace("{{EXPLANATION_INTRO}}", safe_hero_intro)
+        index_content = index_content.replace("{{EXPLANATION_FULL}}", safe_hero_full)
+        index_content = index_content.replace("{{ACTION_1}}", safe_hero_action1)
+        index_content = index_content.replace("{{ACTION_2}}", safe_hero_action2)
+        index_content = index_content.replace("{{ARTICLES_GRID}}", articles_html)
+
+        # 原子性を維持した書き出し保存（index.htmlを作成）
         index_path = "index.html"
-        if not os.path.exists(index_path):
-            logging.error("index.html が見つかりません。")
-            return
-
-        with open(index_path, "r", encoding="utf-8") as f:
-            index_content = f.read()
-
-        if "<!-- ARTICLES_START -->" not in index_content or "<!-- ARTICLES_END -->" not in index_content:
-            logging.error("index.html 内にARTICLES_START/ENDタグが見つかりません。")
-            return
-
-        if "<!-- HERO_ARTICLE_START -->" not in index_content or "<!-- HERO_ARTICLE_END -->" not in index_content:
-            logging.error("index.html 内にHERO_ARTICLE_START/ENDタグが見つかりません。")
-            return
-
-        pattern = re.compile(r"<!-- ARTICLES_START -->.*?<!-- ARTICLES_END -->", re.DOTALL)
-        hero_pattern = re.compile(r"<!-- HERO_ARTICLE_START -->.*?<!-- HERO_ARTICLE_END -->", re.DOTALL)
-
-        new_index_content = hero_pattern.sub(hero_html, index_content)
-        new_index_content = pattern.sub(f"<!-- ARTICLES_START -->\n{articles_html}\n                <!-- ARTICLES_END -->", new_index_content)
-
         tmp_index_path = index_path + ".tmp"
         with open(tmp_index_path, "w", encoding="utf-8") as f:
-            f.write(new_index_content)
+            f.write(index_content)
         os.replace(tmp_index_path, index_path)
 
-        logging.info("index.html を更新しました。")
-        print("✅ index.html の一覧更新およびローテーション削除が完了しました！")
+        logging.info("template_index.html から index.html を全自動生成（ビルド）しました。")
+        print("✅ index.html の全自動ビルドおよびローテーション削除が完了しました！")
 
     except Exception as e:
-        logging.error(f"index.html の更新中にエラーが発生しました: {e}")
+        logging.error(f"index.html の全自動ビルド中にエラーが発生しました: {e}")
 
 # ==========================================
 # 8. オーケストレーター
@@ -448,6 +409,27 @@ def main():
     processed_urls = {h["url"] for h in history if isinstance(h, dict) and "url" in h}
 
     new_article_created = False
+    
+    # 🔴 改善：初回起動時にデータ（data/）がまだ空の場合のみ、挙動テストのためにGoogle AIブログの模擬データから
+    # 強制的に1記事を生成するお助けテスト機能を搭載。
+    data_files = [f for f in os.listdir("data") if f.endswith(".json")]
+    if not data_files:
+        logging.info("データフォルダが空のため、初期挙動テスト用にデモ記事を自動生成します。")
+        print("💡 初期データを検出。初回テスト用の要約を自動生成しています...")
+        mock_source_text = """
+        Google has introduced Gemini 2.5, a massive upgrade in generative AI capabilities.
+        The new model offers exceptional processing speeds and deeply integrated multimodality.
+        Users can now analyze real-time video streams and complex codebases seamlessly.
+        """
+        slug = run_article_generator(
+            source_text=mock_source_text,
+            source_url="https://blog.google/technology/ai/",
+            source_name="Google AI Official"
+        )
+        if slug:
+            new_article_created = True
+
+    # RSSの通常監視
     MAX_PROCESS_PER_RUN = 1
     processed_count = 0
 
@@ -498,7 +480,7 @@ def main():
 
     save_history(history)
 
-    # 🔴 改善：手動のindex.html変更やテンプレートの変更がいつでも即時反映されるよう、
+    # 🔴 改善：手動のtemplate_index.html変更やテンプレートの変更がいつでも即時反映されるよう、
     # 新着記事の有無に関わらず、起動されたら必ず最新データを基に「再ビルド」を100%実行する仕様にアップグレード！
     rebuild_index_and_rotate_storage()
 
