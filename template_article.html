@@ -41,7 +41,6 @@
     </header>
 
     <main class="container">
-        <!-- メイン記事 (全自動で書き換えられる領域) -->
         <article class="post fade-element">
             <div class="post-meta">
                 <time datetime="{{DATE_ISO}}">{{DATE_JA}}</time>
@@ -51,6 +50,7 @@
             
             <h2 class="post-title">{{TITLE}}</h2>
 
+            <!-- 第一層：3行まとめ（結論 ＆ 詳細展開） -->
             <section class="summary-card">
                 <h3>📌 3行まとめ（結論）</h3>
                 <ul>
@@ -58,13 +58,26 @@
                     <li>{{SUMMARY_2}}</li>
                     <li>{{SUMMARY_3}}</li>
                 </ul>
+                <button class="toggle-button text-toggle" data-close-text="🔍 3行まとめのさらに詳しい解説を読む" data-open-text="▲ 詳しい解説を閉じる">🔍 3行まとめのさらに詳しい解説を読む</button>
+                <div class="toggle-content">
+                    <div class="summary-detail">
+                        <h4>さらに詳しく知りたい方へ</h4>
+                        <p>{{SUMMARY_DETAIL}}</p>
+                    </div>
+                </div>
             </section>
 
+            <!-- 第二層：初心者向け解説（展開式） -->
             <section class="content-section">
                 <h3>💡 つまり、どういうこと？（初心者向け解説）</h3>
-                <p>{{EXPLANATION}}</p>
+                <p>{{EXPLANATION_INTRO}}</p>
+                <button class="toggle-button" data-close-text="📖 つまり？ の続きを詳しく読む" data-open-text="▲ 閉じる">📖 つまり？ の続きを詳しく読む</button>
+                <div class="toggle-content">
+                    <p>{{EXPLANATION_FULL}}</p>
+                </div>
             </section>
 
+            <!-- 第三層：実用アクション -->
             <section class="action-section">
                 <h3>🚀 あなたはどう活かすべき？（実用アクション）</h3>
                 <div class="action-box">
@@ -77,7 +90,29 @@
             </section>
         </article>
 
-
+        <!-- 初心者向けセクション -->
+        <section class="beginner-section fade-element" id="beginner">
+            <div class="beginner-box">
+                <span class="section-mini">BEGINNER GUIDE</span>
+                <h2>AI初心者でも、<br>置いていかれないために。</h2>
+                <p>ChatGPTとは？ Claudeとの違いは？ AIは何に使える？<br>そんな日常の小さな疑問を、その場でシンプルに解決します。</p>
+                <button class="toggle-button primary-button" data-close-text="📖 初心者ガイドを見る" data-open-text="▲ ガイドを閉じる">📖 初心者ガイドを見る</button>
+                <div class="toggle-content beginner-guide-content">
+                    <div class="qna-item">
+                        <h4>Q. ChatGPTとは？</h4>
+                        <p>OpenAI社が開発した、人間と話しているかのように自然に対話ができるAIアシスタントです。文章の作成やプログラミング、日常の素朴な疑問への回答まで何でもこなせます。</p>
+                    </div>
+                    <div class="qna-item">
+                        <h4>Q. Claude（クロード）とは？</h4>
+                        <p>Anthropic社が開発したAIです。ChatGPTと比べて、特に長文を正確に読み解く力や、人間の感情に寄り添った自然で知的な日本語を作成する能力に優れています。</p>
+                    </div>
+                    <div class="qna-item">
+                        <h4>Q. AIって実際何に使えるの？</h4>
+                        <p>ビジネスメールの自動作成、長文PDF資料の要約、旅行の計画、プログラミング学習のサポートなど、まるで「何でも知っている頼れる相棒」が24時間いつでも手伝ってくれる感覚で活用できます。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
 
     <footer class="site-footer fade-element">
