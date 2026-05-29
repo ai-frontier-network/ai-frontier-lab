@@ -9,8 +9,8 @@ from datetime import datetime
 import urllib.request
 import xml.etree.ElementTree as ET
 from pydantic import BaseModel, Field
-import google.generativeai as genai
-from google.api_core import exceptions as google_exceptions
+from google import genai
+from google.genai import types
 
 # ==========================================
 # 1. ログ・フォルダ初期設定（堅牢性と管理0化）
