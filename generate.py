@@ -9,6 +9,7 @@ from datetime import datetime
 import urllib.request
 import xml.etree.ElementTree as ET
 from pydantic import BaseModel, Field
+# 🔴 改善：レガシーなSDKから最新の google-genai SDKへ完全移行
 from google import genai
 from google.genai import types
 
@@ -140,9 +141,9 @@ def run_article_generator(source_text: str, source_url: str, source_name: str) -
         logging.error("環境変数 'GEMINI_API_KEY' が設定されていません。")
         return ""
 
-    # ✅ 新ライブラリ: google-genai
+    # 🔴 最新SDKのClient初期化
     client = genai.Client(api_key=api_key)
-    model_name = os.environ.get("GEMINI_MODEL", "gemini-2.5-flash")
+    model_name = os.environ.get("GEMINI_MODEL", "gemini-2.0-flash")
 
     prompt = f"""
     あなたは、「AI初心者でも直感的に理解できる」日本語コンテンツを作成する、日本最高レベルのAIニュース編集者です。
@@ -164,6 +165,7 @@ def run_article_generator(source_text: str, source_url: str, source_name: str) -
     for attempt in range(MAX_RETRIES):
         try:
             logging.info(f"Gemini API呼び出し中 (試行 {attempt + 1}/{MAX_RETRIES})...")
+            # 🔴 最新SDKの generate_content 形式
             response = client.models.generate_content(
                 model=model_name,
                 contents=prompt,
@@ -209,6 +211,7 @@ def run_article_generator(source_text: str, source_url: str, source_name: str) -
         logging.error(f"バリデーション失敗: {e}")
         return ""
 
+    # Pydantic v2に準拠
     article_dict = validated_data.model_dump()
     slug = sanitize_slug(article_dict["slug"])
 
