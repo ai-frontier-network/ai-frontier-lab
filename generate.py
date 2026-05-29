@@ -149,7 +149,7 @@ def run_article_generator(source_text: str, source_url: str, source_name: str) -
         return ""
 
     client = genai.Client(api_key=api_key)
-    model_name = os.environ.get("GEMINI_MODEL", "gemini-2.0-flash")
+    model_name = os.environ.get("GEMINI_MODEL", "gemini-2.5-flash")
 
     # 🔴 改善④：プロンプト指示のさらなる強化
     prompt = f"""
