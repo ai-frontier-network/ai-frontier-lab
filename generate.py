@@ -28,16 +28,24 @@ logging.basicConfig(
 
 MAX_ARTICLES_LIMIT = 30
 MAX_HISTORY_LIMIT = 5000
+TEMPLATE_VERSION = "1.5.0"  # 🔴 改善⑥：テンプレートバージョン管理の導入
 
 # ==========================================
-# 2. Pydanticスキーマ定義
+# 2. Pydanticスキーマ定義（JSONの完全バリデーション）
 # ==========================================
 class ArticleOutputSchema(BaseModel):
     title: str = Field(description="日本語のキャッチーで分かりやすいタイトル。〜が登場、〜が可能に、など動詞で終わる自然な表現（35文字以内）。")
     summary_1: str = Field(description="3行結論の1つ目。事実のみで構成され、推測や感想を含めない。体言止めで30文字以内。")
     summary_2: str = Field(description="3行結論の2つ目。事実のみで構成され、推測や感想を含めない。体言止めで30文字以内。")
     summary_3: str = Field(description="3行結論の3つ目。事実のみで構成され、推測や感想を含めない。体言止めで30文字以内。")
-    summary_detail: str = Field(description="3行まとめのさらに詳しい解説。中級者向けの客観的な技術詳細。150文字程度。")
+    # 🔴 改善④（情報量強化）：400〜700文字で、技術背景から今後の影響まで踏み込んだ詳細な解説をAIに指示
+    summary_detail: str = Field(
+        description="""
+        400〜700文字程度。
+        初心者にも分かるように、技術的な背景、GoogleやOpenAIなどの企業の狙い、なぜこれが重要なのか、
+        何が変わり、業界や一般ユーザーに今後どのような影響があるか、今後の可能性を含めて詳細に記述してください。
+        """
+    )
     explanation_intro: str = Field(description="初心者向け解説の導入。興味を惹く一文。50文字以内。")
     explanation_full: str = Field(description="初心者向け解説の続き。「たとえば〜」から始まる具体的な比喩を必ず含め、専門用語を使わずに中学生でも理解できるように優しく噛み砕いた解説。150文字程度。")
     action_1: str = Field(description="一般ユーザーや日本のビジネスマンへの具体的な影響や実践的な実用例。")
@@ -141,8 +149,9 @@ def run_article_generator(source_text: str, source_url: str, source_name: str) -
         return ""
 
     client = genai.Client(api_key=api_key)
-    model_name = os.environ.get("GEMINI_MODEL", "gemini-2.5-flash")
+    model_name = os.environ.get("GEMINI_MODEL", "gemini-2.0-flash")
 
+    # 🔴 改善④：プロンプト指示のさらなる強化
     prompt = f"""
     あなたは、「AI初心者でも直感的に理解できる」日本語コンテンツを作成する、日本最高レベルのAIニュース編集者です。
     以下の【厳守ルール】に厳密に従い、海外AI記事の日本語コンテンツを生成してください。
@@ -150,8 +159,9 @@ def run_article_generator(source_text: str, source_url: str, source_name: str) -
     【厳守ルール】
     - 専門用語を限界まで噛み砕き、中学生でもイメージできる平易な日本語にしてください。
     - 誇張を排し、客観的かつ断定しすぎない知的なトーンを保ってください。
+    - summary_detailは浅い説明で終わらせず、「なぜ重要なのか」「従来との違い」「今後何が変わるのか」まで踏み込んで、400〜700文字程度で論理的に説明してください。
     - titleは日本のエンジニアやビジネスマンがクリックしたくなる自然な表現にしてください。
-    - slugは半角英数字とハイフンのみで、英単語3〜5語程度（例: gemini-2-flash-release）で指定してください。
+    - slugはアルファベット小文字とハイフンのみ（例: gemini-2-flash-release）で指定してください。
 
     【元記事（英語）】
     {safe_source_text}
@@ -220,7 +230,12 @@ def run_article_generator(source_text: str, source_url: str, source_name: str) -
 
     output_json_path = os.path.join("data", f"{slug}.json")
 
-    safe_data = {k: html.escape(str(v)) for k, v in article_dict.items() if k != "slug"}
+    # 🔴 改善②：JSONデータに情報ソースURLとソース名、テンプレートバージョンを結合保存！
+    article_dict["source_url"] = source_url
+    article_dict["source_name"] = source_name
+    article_dict["template_version"] = TEMPLATE_VERSION
+
+    safe_data = {k: html.escape(str(v)) for k, v in article_dict.items() if k not in ["slug", "source_url", "source_name", "template_version"]}
     safe_source_url = html.escape(source_url)
     safe_source_name = html.escape(source_name)
 
@@ -278,10 +293,9 @@ def run_article_generator(source_text: str, source_url: str, source_name: str) -
         return ""
 
 # ==========================================
-# 7. template_index.html を基にした index.html 完全自動コンパイル（SSG方式）
+# 7. index.html & archive.html の全自動ビルド（SSGコンパイル）
 # ==========================================
 def rebuild_index_and_rotate_storage():
-    """template_index.html を読み込み、最新記事を流し込んで index.html を全自動生成する"""
     try:
         json_files = [f for f in os.listdir("data") if f.endswith(".json")]
         all_articles = []
@@ -314,7 +328,6 @@ def rebuild_index_and_rotate_storage():
                         os.remove(path)
                 logging.info(f"古い記事を削除しました: {d_slug}")
 
-        # 🔴 改善：template_index.html を安全に読み込んでビルドする
         template_index_path = "template_index.html"
         if not os.path.exists(template_index_path):
             logging.error("template_index.html が見つかりません。")
@@ -365,7 +378,7 @@ def rebuild_index_and_rotate_storage():
                 </article>
             """
 
-        # 🔴 改善：template_index.html のすべての変数を、安全に一括置換！
+        # 3. index.html をビルド
         index_content = index_template_content
         index_content = index_content.replace("{{TITLE}}", safe_hero_title)
         index_content = index_content.replace("{{DATE_ISO}}", hero_date_iso)
@@ -382,18 +395,63 @@ def rebuild_index_and_rotate_storage():
         index_content = index_content.replace("{{ACTION_2}}", safe_hero_action2)
         index_content = index_content.replace("{{ARTICLES_GRID}}", articles_html)
 
-        # 原子性を維持した書き出し保存（index.htmlを作成）
+        # 原子性を維持して index.html を書き出し保存
         index_path = "index.html"
         tmp_index_path = index_path + ".tmp"
         with open(tmp_index_path, "w", encoding="utf-8") as f:
             f.write(index_content)
         os.replace(tmp_index_path, index_path)
+        logging.info("index.html をビルドしました。")
 
-        logging.info("template_index.html から index.html を全自動生成（ビルド）しました。")
-        print("✅ index.html の全自動ビルドおよびローテーション削除が完了しました！")
+        # 🔴 改善③（スマート・アーカイブ）：完成した index.html のデザインを完璧に引き継ぎ、
+        # ヒーロー枠を「過去の記事ヘッダー」に、一覧を「全件カード」に置き換えた archive.html を全自動生成！
+        archive_articles_html = ""
+        for _, art in all_articles:  # アーカイブは全件並べる
+            a_title = html.escape(art["title"])
+            a_intro = html.escape(art["explanation_intro"])
+            a_slug = sanitize_slug(art["slug"])
+            archive_articles_html += f"""
+                <article class="article-card fade-element">
+                    <div class="article-meta">
+                        <span>AI News</span>
+                        <span>Archived</span>
+                    </div>
+                    <h3>{a_title}</h3>
+                    <p>{a_intro}</p>
+                    <a href="articles/{a_slug}.html">続きを読む &rarr;</a>
+                </article>
+            """
+
+        archive_hero_header_html = """
+        <div class="archive-header" style="text-align: center; padding: 40px 0; margin-bottom: 40px;">
+            <span class="section-mini" style="background: var(--tag-bg); padding: 6px 12px; border-radius: 999px; font-size: 0.8rem; font-weight: 600;">ARCHIVE</span>
+            <h2 style="font-size: 2.2rem; font-weight: 800; margin: 20px 0; letter-spacing: -0.02em;">過去の記事一覧</h2>
+            <p style="color: var(--text-muted); max-width: 500px; margin: 0 auto; line-height: 1.6;">これまでに AI Frontier Lab が配信した、日本一わかりやすい要約記事のアーカイブです。</p>
+        </div>
+        """
+
+        # index.html の内容をベースにして、安全に置換（デザイン崩れデグレを100%防止）
+        archive_content = index_content
+        # ヒーロー記事部分をヘッダーへ置換
+        hero_pattern = re.compile(r"<article class=\"post fade-element\">.*?</article>", re.DOTALL)
+        archive_content = hero_pattern.sub(archive_hero_header_html, archive_content)
+        # 一覧部分を全件リストへ置換
+        archive_content = archive_content.replace(articles_html, archive_articles_html)
+        # タイトル変更
+        archive_content = archive_content.replace(f"<title>{safe_hero_title} | AI Frontier Lab</title>", "<title>過去の記事一覧 | AI Frontier Lab</title>")
+
+        # 原子性を維持して archive.html を書き出し保存
+        archive_path = "archive.html"
+        tmp_archive_path = archive_path + ".tmp"
+        with open(tmp_archive_path, "w", encoding="utf-8") as f:
+            f.write(archive_content)
+        os.replace(tmp_archive_path, archive_path)
+        logging.info("archive.html をビルドしました。")
+
+        print("✅ index.html & archive.html の全自動ビルドおよびローテーション削除が完了しました！")
 
     except Exception as e:
-        logging.error(f"index.html の全自動ビルド中にエラーが発生しました: {e}")
+        logging.error(f"HTMLビルド中にエラーが発生しました: {e}")
 
 # ==========================================
 # 8. オーケストレーター
@@ -410,8 +468,7 @@ def main():
 
     new_article_created = False
     
-    # 🔴 改善：初回起動時にデータ（data/）がまだ空の場合のみ、挙動テストのためにGoogle AIブログの模擬データから
-    # 強制的に1記事を生成するお助けテスト機能を搭載。
+    # 挙動テスト用の模擬記事自動生成
     data_files = [f for f in os.listdir("data") if f.endswith(".json")]
     if not data_files:
         logging.info("データフォルダが空のため、初期挙動テスト用にデモ記事を自動生成します。")
@@ -480,8 +537,7 @@ def main():
 
     save_history(history)
 
-    # 🔴 改善：手動のtemplate_index.html変更やテンプレートの変更がいつでも即時反映されるよう、
-    # 新着記事の有無に関わらず、起動されたら必ず最新データを基に「再ビルド」を100%実行する仕様にアップグレード！
+    # 新着記事の有無に関わらず、起動されたら必ず最新データを基に「再ビルド」を実行！
     rebuild_index_and_rotate_storage()
 
 if __name__ == "__main__":
