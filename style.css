@@ -210,11 +210,12 @@ a:hover { text-decoration: underline; }
     
     /* ボタンのスマホ中央寄せ */
 .toggle-button {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    text-align: center;
-}
+        display: block;
+        width: fit-content;
+        margin-top: 15px;
+        margin-left: auto;
+        margin-right: auto;
+    }
 
     /* ③ 見出しエラー対策に合わせたスタイルの微調整（h3へ） */
     .summary-detail h3, .qna-item h3 {
