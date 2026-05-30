@@ -104,10 +104,7 @@ a:hover { text-decoration: underline; }
 
 /* インタラクティブ・トグル（アコーディオン）UI設計 */
 .toggle-button {
-    display: block;
-    width: fit-content;
-    margin-left: auto;
-    margin-right: auto;
+    display: inline-block;  
     background: var(--btn-bg);
     color: var(--btn-text);
     border: 1px solid var(--border-color);
@@ -118,7 +115,10 @@ a:hover { text-decoration: underline; }
     font-size: 0.95rem;
     transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
     margin-top: 15px;
-}
+   }
+
+
+
 .toggle-button:hover {
     opacity: 0.85;
     transform: translateY(-1px);
@@ -209,7 +209,7 @@ a:hover { text-decoration: underline; }
 
     
     /* ボタンのスマホ中央寄せ */
-.toggle-button {
+    .toggle-button {
         display: block;
         width: fit-content;
         margin-top: 15px;
