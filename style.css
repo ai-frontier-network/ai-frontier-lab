@@ -208,15 +208,14 @@ a:hover { text-decoration: underline; }
         display: block;
     }
 
-    /* ② トグルボタンをスマホで完璧に左右中央へ配置 */
-    .toggle-button {
-        display: block !important; /* 強制的にブロック化 */
-        margin-left: auto !important;
-        margin-right: auto !important;
-        width: fit-content;
-        min-width: 240px; /* 押しやすい幅 */
-        text-align: center;
-    }
+    
+    /* ボタンのスマホ中央寄せ */
+.toggle-button {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
 
     /* ③ 見出しエラー対策に合わせたスタイルの微調整（h3へ） */
     .summary-detail h3, .qna-item h3 {
