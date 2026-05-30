@@ -208,13 +208,18 @@ a:hover { text-decoration: underline; }
     }
 
     
-    /* ボタンのスマホ中央寄せ */
-    .toggle-button {
-        display: block;
-        width: fit-content;
-        margin-top: 15px;
-        margin-left: auto;
-        margin-right: auto;
+   .content-section,
+    .summary-card {
+        text-align: center;
+    }
+    
+    /* テキストだけは左に戻す */
+    .content-section p,
+    .content-section h3,
+    .summary-card ul,
+    .summary-card h3,
+    .toggle-content {
+        text-align: left;
     }
 
     /* ③ 見出しエラー対策に合わせたスタイルの微調整（h3へ） */
@@ -222,15 +227,5 @@ a:hover { text-decoration: underline; }
         font-size: 1.1rem;
         color: var(--accent-color);
         margin-bottom: 8px;
-    }
-}
-
-
-@media (max-width: 768px) {
-    .content-section .toggle-button {
-        display: block !important;
-        width: fit-content !important;
-        margin-left: auto !important;
-        margin-right: auto !important;
     }
 }
