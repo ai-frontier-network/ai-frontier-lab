@@ -30,7 +30,7 @@ logging.basicConfig(
 
 MAX_ARTICLES_LIMIT = 30
 MAX_HISTORY_LIMIT = 5000
-TEMPLATE_VERSION = "1.5.0"  # 🔴 改善⑥：テンプレートバージョン管理の導入
+TEMPLATE_VERSION = "1.5.0"
 
 # ==========================================
 # 2. Pydanticスキーマ定義（JSONの完全バリデーション）
@@ -40,7 +40,6 @@ class ArticleOutputSchema(BaseModel):
     summary_1: str = Field(description="3行結論の1つ目。事実のみで構成され、推測や感想を含めない。体言止めで30文字以内。")
     summary_2: str = Field(description="3行結論の2つ目。事実のみで構成され、推測や感想を含めない。体言止めで30文字以内。")
     summary_3: str = Field(description="3行結論の3つ目。事実のみで構成され、推測や感想を含めない。体言止めで30文字以内。")
-    # 🔴 改善④（情報量強化）：400〜700文字で、技術背景から今後の影響まで踏み込んだ詳細な解説をAIに指示
     summary_detail: str = Field(
         description="""
         500〜700文字程度。
@@ -51,7 +50,8 @@ class ArticleOutputSchema(BaseModel):
         """
     )
     explanation_intro: str = Field(description="初心者向け解説の導入。興味を惹く一文。50文字以内。")
-    explanation_full: str = Field(description="初心者向け解説の続き。「たとえば〜」から始まる具体的な比喩を必ず含め、専門用語を使わずに中学生でも理解できるように優しく噛み砕いた解説。300〜500文字程度で、文章が短くならないよう具体例を多く記述してください。")
+    # 🔴 改善①（解説長文化）：300〜500文字での詳細な「たとえ話」をスキーマで義務付け
+    explanation_full: str = Field(description="初心者向け解説の続き。「たとえば〜」から始まる具体的な比喩を必ず含め、専門用語を使わずに中学生でも理解できるように優しく噛み砕いた詳細な解説。300〜500文字程度で、文章が短くならないよう具体例を多く記述してください。")
     action_1: str = Field(description="一般ユーザーや日本のビジネスマンへの具体的な影響や実践的な実用例。")
     action_2: str = Field(description="一般ユーザーや初心者が「まず今すぐ試すべきアクション」の具体的な推奨。")
     slug: str = Field(description="保存するファイル名に使用する半角英数字とハイフンのみのスラグ。例: 'claude-4-release'")
@@ -155,7 +155,7 @@ def run_article_generator(source_text: str, source_url: str, source_name: str) -
     client = genai.Client(api_key=api_key)
     model_name = os.environ.get("GEMINI_MODEL", "gemini-2.5-flash")
 
-    # 🔴 改善④：プロンプト指示のさらなる強化
+    # 🔴 改善①（解説長文化）：プロンプトでの指示文を300〜500文字に超強化！
     prompt = f"""
     あなたは、「AI初心者でも直感的に理解できる」日本語コンテンツを作成する、日本最高レベルのAIニュース編集者です。
     以下の【厳守ルール】に厳密に従い、海外AI記事の日本語コンテンツを生成してください。
@@ -164,6 +164,7 @@ def run_article_generator(source_text: str, source_url: str, source_name: str) -
     - 専門用語を限界まで噛み砕き、中学生でもイメージできる平易な日本語にしてください。
     - 誇張を排し、客観的かつ断定しすぎない知的なトーンを保ってください。
     - summary_detailは浅い説明で終わらせず、元記事（英語）の具体的なデータ、数値、固有名詞、または重要な一節（日本語訳）を適切に「引用」しながら、「なぜ重要なのか」「従来との違い」「今後何が変わるのか」まで踏み込んで、必ず500〜700文字程度のボリュームで極めて詳細に論理的に説明してください。
+    - explanation_fullは短い説明で終わらせず、「たとえば〜」から始まる具体的な例え話を深く掘り下げ、300〜500文字程度の十分なボリュームで、中学生でも情景がイメージできるように極めて優しく丁寧に解説してください。
     - titleは日本のエンジニアやビジネスマンがクリックしたくなる自然な表現にしてください。
     - slugはアルファベット小文字とハイフンのみ（例: gemini-2-flash-release）で指定してください。
 
@@ -225,82 +226,133 @@ def run_article_generator(source_text: str, source_url: str, source_name: str) -
     article_dict = validated_data.model_dump()
     slug = sanitize_slug(article_dict["slug"])
 
-    output_html_path = os.path.join("articles", f"{slug}.html")
-    if os.path.exists(output_html_path):
-        suffix = uuid.uuid4().hex[:8]
-        slug = f"{slug}-{suffix}"
-        output_html_path = os.path.join("articles", f"{slug}.html")
-        article_dict["slug"] = slug
+    # 🔴 改善③（1ファイル管理）：個別記事の生成・再ビルドを一元管理するためのヘルパー関数「build_page」を呼び出すように設計
+    build_page(
+        body_template_path="template_article.html",
+        title=article_dict["title"],
+        date_iso=datetime.now().strftime("%Y-%m-%dT%H:%M:%S+09:00"),
+        date_ja=datetime.now().strftime("%Y年%m月%d日 %H:%M"),
+        source_url=source_url,
+        source_name=source_name,
+        replacements={
+            "{{SUMMARY_1}}": article_dict["summary_1"],
+            "{{SUMMARY_2}}": article_dict["summary_2"],
+            "{{SUMMARY_3}}": article_dict["summary_3"],
+            "{{SUMMARY_DETAIL}}": article_dict["summary_detail"],
+            "{{EXPLANATION_INTRO}}": article_dict["explanation_intro"],
+            "{{EXPLANATION_FULL}}": article_dict["explanation_full"],
+            "{{ACTION_1}}": article_dict["action_1"],
+            "{{ACTION_2}}": article_dict["action_2"]
+        },
+        output_path=os.path.join("articles", f"{slug}.html"),
+        is_article=True,
+        slug=slug
+    )
 
+    # 中間データの保存
     output_json_path = os.path.join("data", f"{slug}.json")
-
-    # 🔴 改善②：JSONデータに情報ソースURLとソース名、テンプレートバージョンを結合保存！
     article_dict["source_url"] = source_url
     article_dict["source_name"] = source_name
     article_dict["template_version"] = TEMPLATE_VERSION
 
-    safe_data = {k: html.escape(str(v)) for k, v in article_dict.items() if k not in ["slug", "source_url", "source_name", "template_version"]}
-    safe_source_url = html.escape(source_url)
-    safe_source_name = html.escape(source_name)
-
-    now = datetime.now()
-    date_iso = now.strftime("%Y-%m-%dT%H:%M:%S+09:00")
-    date_ja = now.strftime("%Y年%m月%d日 %H:%M")
-
-    template_path = "template_article.html"
-    if not os.path.exists(template_path):
-        logging.error(f"テンプレート '{template_path}' が見つかりません。")
-        return ""
-
-    with open(template_path, "r", encoding="utf-8") as f:
-        template_content = f.read()
-
-    replacements = {
-        "{{TITLE}}": safe_data["title"],
-        "{{DATE_ISO}}": date_iso,
-        "{{DATE_JA}}": date_ja,
-        "{{SOURCE_URL}}": safe_source_url,
-        "{{SOURCE_NAME}}": safe_source_name,
-        "{{SUMMARY_1}}": safe_data["summary_1"],
-        "{{SUMMARY_2}}": safe_data["summary_2"],
-        "{{SUMMARY_3}}": safe_data["summary_3"],
-        "{{SUMMARY_DETAIL}}": safe_data["summary_detail"],
-        "{{EXPLANATION_INTRO}}": safe_data["explanation_intro"],
-        "{{EXPLANATION_FULL}}": safe_data["explanation_full"],
-        "{{ACTION_1}}": safe_data["action_1"],
-        "{{ACTION_2}}": safe_data["action_2"]
-    }
-
-    html_content = template_content
-    for placeholder, value in replacements.items():
-        html_content = html_content.replace(placeholder, value)
-
-    if "{{" in html_content:
-        logging.warning("警告：テンプレート内に未置換の変数が残っている可能性があります。")
-
     try:
-        tmp_html_path = output_html_path + ".tmp"
         tmp_json_path = output_json_path + ".tmp"
-
-        with open(tmp_html_path, "w", encoding="utf-8") as f:
-            f.write(html_content)
-        os.replace(tmp_html_path, output_html_path)
-
         with open(tmp_json_path, "w", encoding="utf-8") as f:
             json.dump(article_dict, f, ensure_ascii=False, indent=2)
         os.replace(tmp_json_path, output_json_path)
-
         logging.info(f"記事生成成功: {slug}")
         return slug
     except Exception as e:
-        logging.error(f"ファイル書き込み失敗: {e}")
+        logging.error(f"JSON保存失敗: {e}")
         return ""
 
 # ==========================================
-# 7. template_index.html と template_article.html を基にした全自動再ビルド（SSGコンパイル）
+# 🔴 新機能：【一元管理の心臓】全ページ共通レイアウト結合（ビルド）ヘルパー関数
+# ==========================================
+def build_page(body_template_path, title, date_iso, date_ja, source_url, source_name, replacements, output_path, is_article=False, slug=""):
+    """layout.html と各ページの中身（テンプレート）を合体させ、変数を安全に置換して書き出す"""
+    try:
+        # 1. 唯一のデザインファイルである layout.html の読み込み
+        if not os.path.exists("layout.html"):
+            logging.error("layout.html が見つかりません。")
+            return
+
+        with open("layout.html", "r", encoding="utf-8") as f:
+            layout_content = f.read()
+
+        # 2. 中身（ボディ）テンプレートの読み込み
+        if not os.path.exists(body_template_path):
+            logging.error(f"テンプレート '{body_template_path}' が見つかりません。")
+            return
+
+        with open(body_template_path, "r", encoding="utf-8") as f:
+            body_content = f.read()
+
+        # 3. 合体！
+        combined_content = layout_content.replace("{{BODY_CONTENT}}", body_content)
+
+        # 4. パスの自動調整（個別記事は /style.css、トップページは style.css など自動的に最適化）
+        if is_article:
+            combined_content = combined_content.replace("{{CSS_PATH}}", "/style.css")
+            combined_content = combined_content.replace("{{JS_PATH}}", "/script.js")
+            combined_content = combined_content.replace("{{EXPLANATION_INTRO}}", replacements.get("{{EXPLANATION_INTRO}}", ""))
+            
+            # 個別記事用の構造化データを自動埋め込み
+            structured_data = f"""
+            <script type="application/ld+json">
+            {{
+              "@context": "https://schema.org",
+              "@type": "NewsArticle",
+              "headline": "{title}",
+              "datePublished": "{date_iso}",
+              "author": {{"@type": "Person", "name": "ちゃろ"}}
+            }}
+            </script>
+            """
+            combined_content = combined_content.replace("{{STRUCTURED_DATA}}", structured_data)
+        else:
+            combined_content = combined_content.replace("{{CSS_PATH}}", "style.css")
+            combined_content = combined_content.replace("{{JS_PATH}}", "script.js")
+            combined_content = combined_content.replace("{{EXPLANATION_INTRO}}", replacements.get("{{EXPLANATION_INTRO}}", "最新のAIニュースをお届けします。"))
+            
+            # トップ・アーカイブ用の構造化データを自動埋め込み
+            structured_data = """
+            <script type="application/ld+json">
+            {
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              "name": "AI Frontier Lab",
+              "url": "https://ai-example.pray-power-is-god-and-cocoro.com/"
+            }
+            </script>
+            """
+            combined_content = combined_content.replace("{{STRUCTURED_DATA}}", structured_data)
+
+        # 5. 変数の置換
+        combined_content = combined_content.replace("{{TITLE}}", title)
+        combined_content = combined_content.replace("{{DATE_ISO}}", date_iso)
+        combined_content = combined_content.replace("{{DATE_JA}}", date_ja)
+        combined_content = combined_content.replace("{{SOURCE_URL}}", html.escape(source_url))
+        combined_content = combined_content.replace("{{SOURCE_NAME}}", html.escape(source_name))
+
+        # 個別置換の実行
+        for placeholder, value in replacements.items():
+            combined_content = combined_content.replace(placeholder, value)
+
+        # 原子性を維持した書き出し（上書き）
+        tmp_output_path = output_path + ".tmp"
+        with open(tmp_output_path, "w", encoding="utf-8") as f:
+            f.write(combined_content)
+        os.replace(tmp_output_path, output_path)
+
+    except Exception as e:
+        logging.error(f"build_page 実行中にエラーが発生しました ({output_path}): {e}")
+
+# ==========================================
+# 7. template_index.html と template_article.html を基にした全自動一括再ビルド（SSGコンパイル）
 # ==========================================
 def rebuild_index_and_rotate_storage():
-    """テンプレートを読み込み、最新データを反映したサイト全体（トップ、アーカイブ、全個別記事）を全自動で再ビルドする"""
+    """蓄積されたJSONから最新データを反映したサイト全体を全自動で再ビルドする"""
     try:
         json_files = [f for f in os.listdir("data") if f.endswith(".json")]
         all_articles = []
@@ -315,12 +367,12 @@ def rebuild_index_and_rotate_storage():
             except Exception as e:
                 logging.error(f"JSON読み込み失敗 ({j_file}): {e}")
 
-        # 最新順にソート（更新時間が新しい順）
+        # 最新順にソート
         all_articles.sort(key=lambda x: x[0], reverse=True)
 
         # 容量パンク防止のローテーション物理削除
         if len(all_articles) > MAX_ARTICLES_LIMIT:
-            logging.info(f"記事数が上限（{MAX_ARTICLES_LIMIT}件）を超えたため、古いファイルを自動削除します。")
+            logging.info(f"記事数が上限を超えたため、古いファイルを自動削除します。")
             to_delete = all_articles[MAX_ARTICLES_LIMIT:]
             all_articles = all_articles[:MAX_ARTICLES_LIMIT]
             for _, d_art in to_delete:
@@ -331,77 +383,41 @@ def rebuild_index_and_rotate_storage():
                 ]:
                     if os.path.exists(path):
                         os.remove(path)
-                logging.info(f"古い記事を削除しました: {d_slug}")
 
-        # 1. すべての個別記事HTMLを最新のテンプレートで一括再ビルド（デグレ完全防止）
-        template_article_path = "template_article.html"
-        if os.path.exists(template_article_path):
-            with open(template_article_path, "r", encoding="utf-8") as f:
-                article_template_content = f.read()
-
-            for mtime, art in all_articles:
-                a_slug = sanitize_slug(art["slug"])
-                a_output_html_path = os.path.join("articles", f"{a_slug}.html")
-
-                # 特殊文字のエスケープ処理
-                a_safe_data = {k: html.escape(str(v)) for k, v in art.items() if k not in ["slug", "source_url", "source_name", "template_version"]}
-                a_safe_source_url = html.escape(art.get("source_url", "#"))
-                a_safe_source_name = html.escape(art.get("source_name", "ソース"))
-
-                # 記事が本来生成された日時をファイルタイムスタンプから安全に復元
-                a_now = datetime.fromtimestamp(mtime)
-                a_date_iso = a_now.strftime("%Y-%m-%dT%H:%M:%S+09:00")
-                a_date_ja = a_now.strftime("%Y年%m月%d日 %H:%M")
-
-                a_html_content = article_template_content
-                a_html_content = a_html_content.replace("{{TITLE}}", a_safe_data["title"])
-                a_html_content = a_html_content.replace("{{DATE_ISO}}", a_date_iso)
-                a_html_content = a_html_content.replace("{{DATE_JA}}", a_date_ja)
-                a_html_content = a_html_content.replace("{{SOURCE_URL}}", a_safe_source_url)
-                a_html_content = a_html_content.replace("{{SOURCE_NAME}}", a_safe_source_name)
-                a_html_content = a_html_content.replace("{{SUMMARY_1}}", a_safe_data["summary_1"])
-                a_html_content = a_html_content.replace("{{SUMMARY_2}}", a_safe_data["summary_2"])
-                a_html_content = a_html_content.replace("{{SUMMARY_3}}", a_safe_data["summary_3"])
-                a_html_content = a_html_content.replace("{{SUMMARY_DETAIL}}", a_safe_data["summary_detail"])
-                a_html_content = a_html_content.replace("{{EXPLANATION_INTRO}}", a_safe_data["explanation_intro"])
-                a_html_content = a_html_content.replace("{{EXPLANATION_FULL}}", a_safe_data["explanation_full"])
-                a_html_content = a_html_content.replace("{{ACTION_1}}", a_safe_data["action_1"])
-                a_html_content = a_html_content.replace("{{ACTION_2}}", a_safe_data["action_2"])
-
-                # 原子性を維持した個別HTMLの書き出し
-                a_tmp_html_path = a_output_html_path + ".tmp"
-                with open(a_tmp_html_path, "w", encoding="utf-8") as f:
-                    f.write(a_html_content)
-                os.replace(a_tmp_html_path, a_output_html_path)
-
-        # 2. template_index.html の読み込み
-        template_index_path = "template_index.html"
-        if not os.path.exists(template_index_path):
-            logging.error("template_index.html が見つかりません。")
-            return
-
-        with open(template_index_path, "r", encoding="utf-8") as f:
-            index_template_content = f.read()
-
-        # もし記事データがまだ1件も生成されていない場合、デフォルト表示にする
         if not all_articles:
             logging.info("データフォルダが空のため、一覧の更新を保留します。")
             return
 
-        # ヒーロー記事（最新の1位）のデータを取得してエスケープ
+        # 1. すべての個別記事HTMLを最新のテンプレートで一括再ビルド（デグレ完全防止）
+        for mtime, art in all_articles:
+            a_slug = sanitize_slug(art["slug"])
+            a_date_ja = datetime.fromtimestamp(mtime).strftime("%Y年%m月%d日 %H:%M")
+            a_date_iso = datetime.fromtimestamp(mtime).strftime("%Y-%m-%dT%H:%M:%S+09:00")
+            
+            build_page(
+                body_template_path="template_article.html",
+                title=art["title"],
+                date_iso=a_date_iso,
+                date_ja=a_date_ja,
+                source_url=art.get("source_url", "#"),
+                source_name=art.get("source_name", "ソース"),
+                replacements={
+                    "{{SUMMARY_1}}": art["summary_1"],
+                    "{{SUMMARY_2}}": art["summary_2"],
+                    "{{SUMMARY_3}}": art["summary_3"],
+                    "{{SUMMARY_DETAIL}}": art["summary_detail"],
+                    "{{EXPLANATION_INTRO}}": art["explanation_intro"],
+                    "{{EXPLANATION_FULL}}": art["explanation_full"],
+                    "{{ACTION_1}}": art["action_1"],
+                    "{{ACTION_2}}": art["action_2"]
+                },
+                output_path=os.path.join("articles", f"{a_slug}.html"),
+                is_article=True,
+                slug=a_slug
+            )
+
+        # 2. ヒーロー記事（最新の1位）のデータを取得
         _, hero_art = all_articles[0]
-        safe_hero_title = html.escape(hero_art["title"])
-        safe_hero_sum1 = html.escape(hero_art["summary_1"])
-        safe_hero_sum2 = html.escape(hero_art["summary_2"])
-        safe_hero_sum3 = html.escape(hero_art["summary_3"])
-        safe_hero_detail = html.escape(hero_art["summary_detail"])
-        safe_hero_intro = html.escape(hero_art["explanation_intro"])
-        safe_hero_full = html.escape(hero_art["explanation_full"])
-        safe_hero_action1 = html.escape(hero_art["action_1"])
-        safe_hero_action2 = html.escape(hero_art["action_2"])
-        safe_hero_url = html.escape(hero_art.get("source_url", "#"))
-        safe_hero_name = html.escape(hero_art.get("source_name", "ソース"))
-        
         hero_date_ja = datetime.now().strftime("%Y年%m月%d日 %H:%M")
         hero_date_iso = datetime.now().strftime("%Y-%m-%dT%H:%M:%S+09:00")
 
@@ -425,34 +441,32 @@ def rebuild_index_and_rotate_storage():
                 </article>
             """
 
-        # 4. template_index.html のすべての変数を、安全に一括置換！
-        index_content = index_template_content
-        index_content = index_content.replace("{{TITLE}}", safe_hero_title)
-        index_content = index_content.replace("{{DATE_ISO}}", hero_date_iso)
-        index_content = index_content.replace("{{DATE_JA}}", hero_date_ja)
-        index_content = index_content.replace("{{SOURCE_URL}}", safe_hero_url)
-        index_content = index_content.replace("{{SOURCE_NAME}}", safe_hero_name)
-        index_content = index_content.replace("{{SUMMARY_1}}", safe_hero_sum1)
-        index_content = index_content.replace("{{SUMMARY_2}}", safe_hero_sum2)
-        index_content = index_content.replace("{{SUMMARY_3}}", safe_hero_sum3)
-        index_content = index_content.replace("{{SUMMARY_DETAIL}}", safe_hero_detail)
-        index_content = index_content.replace("{{EXPLANATION_INTRO}}", safe_hero_intro)
-        index_content = index_content.replace("{{EXPLANATION_FULL}}", safe_hero_full)
-        index_content = index_content.replace("{{ACTION_1}}", safe_hero_action1)
-        index_content = index_content.replace("{{ACTION_2}}", safe_hero_action2)
-        index_content = index_content.replace("{{ARTICLES_GRID}}", articles_html)
+        # 4. index.html をビルド（layout.html と template_index.html をガッチャンコ！）
+        build_page(
+            body_template_path="template_index.html",
+            title=hero_art["title"],
+            date_iso=hero_date_iso,
+            date_ja=hero_date_ja,
+            source_url=hero_art.get("source_url", "#"),
+            source_name=hero_art.get("source_name", "ソース"),
+            replacements={
+                "{{SUMMARY_1}}": hero_art["summary_1"],
+                "{{SUMMARY_2}}": hero_art["summary_2"],
+                "{{SUMMARY_3}}": hero_art["summary_3"],
+                "{{SUMMARY_DETAIL}}": hero_art["summary_detail"],
+                "{{EXPLANATION_INTRO}}": hero_art["explanation_intro"],
+                "{{EXPLANATION_FULL}}": hero_art["explanation_full"],
+                "{{ACTION_1}}": hero_art["action_1"],
+                "{{ACTION_2}}": hero_art["action_2"],
+                "{{ARTICLES_GRID}}": articles_html
+            },
+            output_path="index.html",
+            is_article=False
+        )
 
-        # 🔴 改善：古いindex.htmlのチェックをすべて廃止し、template_index.htmlから一撃で新規書き出し保存！
-        index_path = "index.html"
-        tmp_index_path = index_path + ".tmp"
-        with open(tmp_index_path, "w", encoding="utf-8") as f:
-            f.write(index_content)
-        os.replace(tmp_index_path, index_path)
-        logging.info("index.html を新規に全自動ビルドしました。")
-
-        # 5. index.html の内容をベースにして、安全に archive.html をビルド
+        # 5. index.html のビルド後に、過去の全件アーカイブページ「archive.html」を自動生成（デザイン完全一致）
         archive_articles_html = ""
-        for _, art in all_articles:  # アーカイブは全件並べる
+        for _, art in all_articles:
             a_title = html.escape(art["title"])
             a_intro = html.escape(art["explanation_intro"])
             a_slug = sanitize_slug(art["slug"])
@@ -468,35 +482,34 @@ def rebuild_index_and_rotate_storage():
                 </article>
             """
 
-        archive_hero_header_html = """
-        <div class="archive-header" style="text-align: center; padding: 40px 0; margin-bottom: 40px;">
-            <span class="section-mini" style="background: var(--tag-bg); padding: 6px 12px; border-radius: 999px; font-size: 0.8rem; font-weight: 600;">ARCHIVE</span>
-            <h2 style="font-size: 2.2rem; font-weight: 800; margin: 20px 0; letter-spacing: -0.02em;">過去の記事一覧</h2>
-            <p style="color: var(--text-muted); max-width: 500px; margin: 0 auto; line-height: 1.6;">これまでに AI Frontier Lab が配信した、日本一わかりやすい要約記事のアーカイブです。</p>
-        </div>
-        """
+        # index.html をベースにして、安全に archive.html のヒーローエリアをヘッダーへ置換
+        if os.path.exists("index.html"):
+            with open("index.html", "r", encoding="utf-8") as f:
+                index_content = f.read()
 
-        # index_content の内容をベースにして、安全に置換
-        archive_content = index_content
-        hero_pattern = re.compile(r"<article class=\"post fade-element\">.*?</article>", re.DOTALL)
-        archive_content = hero_pattern.sub(archive_hero_header_html, archive_content)
-        archive_content = archive_content.replace(articles_html, archive_articles_html)
-        archive_content = archive_content.replace(f"<title>{safe_hero_title} | AI Frontier Lab</title>", "<title>過去の記事一覧 | AI Frontier Lab</title>")
+            archive_hero_header_html = """
+            <div class="archive-header" style="text-align: center; padding: 40px 0; margin-bottom: 40px;">
+                <span class="section-mini" style="background: var(--tag-bg); padding: 6px 12px; border-radius: 999px; font-size: 0.8rem; font-weight: 600;">ARCHIVE</span>
+                <h2 style="font-size: 2.2rem; font-weight: 800; margin: 20px 0; letter-spacing: -0.02em;">過去の記事一覧</h2>
+                <p style="color: var(--text-muted); max-width: 500px; margin: 0 auto; line-height: 1.6;">これまでに AI Frontier Lab が配信した、日本一わかりやすい要約記事のアーカイブです。</p>
+            </div>
+            """
 
-        # 原子性を維持して archive.html を書き出し保存
-        archive_path = "archive.html"
-        tmp_archive_path = archive_path + ".tmp"
-        with open(tmp_archive_path, "w", encoding="utf-8") as f:
-            f.write(archive_content)
-        os.replace(tmp_archive_path, archive_path)
-        logging.info("archive.html をビルドしました。")
+            archive_content = index_content
+            hero_pattern = re.compile(r"<article class=\"post fade-element\">.*?</article>", re.DOTALL)
+            archive_content = hero_pattern.sub(archive_hero_header_html, archive_content)
+            archive_content = archive_content.replace(articles_html, archive_articles_html)
+            archive_content = archive_content.replace(f"<title>{html.escape(hero_art['title'])} | AI Frontier Lab</title>", "<title>過去の記事一覧 | AI Frontier Lab</title>")
 
-        print("✅ index.html, archive.html, およびすべての個別記事HTMLの再ビルドが完了しました！")
+            tmp_archive_path = "archive.html.tmp"
+            with open(tmp_archive_path, "w", encoding="utf-8") as f:
+                f.write(archive_content)
+            os.replace(tmp_archive_path, "archive.html")
+
+            print("✅ index.html, archive.html, およびすべての個別記事HTMLの再ビルドが完了しました！")
 
     except Exception as e:
         logging.error(f"再ビルド中にエラーが発生しました: {e}")
-
-
 
 # ==========================================
 # 8. オーケストレーター
