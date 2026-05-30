@@ -162,7 +162,7 @@ a:hover { text-decoration: underline; }
     flex-direction: column;
     gap: 24px;
 }
-.qna-item h4 {
+.qna-item h3 {
     font-size: 1.1rem;
     color: var(--accent-color);
     margin-bottom: 8px;
