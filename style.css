@@ -224,3 +224,13 @@ a:hover { text-decoration: underline; }
         margin-bottom: 8px;
     }
 }
+
+
+@media (max-width: 768px) {
+    .content-section .toggle-button {
+        display: block !important;
+        width: fit-content !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+}
