@@ -430,7 +430,7 @@ def rebuild_index_and_rotate_storage():
             safe_slug = sanitize_slug(art["slug"])
             
             articles_html += f"""
-                <article class="article-card fade-element">
+                <article class="article-card">
                     <div class="article-meta">
                         <span>AI News</span>
                         <span>Latest Release</span>
