@@ -471,7 +471,7 @@ def rebuild_index_and_rotate_storage():
             a_intro = html.escape(art["explanation_intro"])
             a_slug = sanitize_slug(art["slug"])
             archive_articles_html += f"""
-                <article class="article-card fade-element">
+                <article class="article-card">
                     <div class="article-meta">
                         <span>AI News</span>
                         <span>Archived</span>
