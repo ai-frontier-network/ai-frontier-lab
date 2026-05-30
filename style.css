@@ -195,20 +195,33 @@ a:hover { text-decoration: underline; }
 .hidden { opacity: 0; transform: translateY(30px); transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
 .show { opacity: 1; transform: translateY(0); }
 
-/* モバイル対応 */
+/* モバイル対応（完全版：ここを丸ごと差し替えてください） */
 @media (max-width: 768px) {
     .header-left { flex-direction: column; align-items: flex-start; gap: 15px; }
     .post-title { font-size: 1.8rem; }
     .beginner-box { padding: 40px 20px; }
     .primary-button { width: 100%; text-align: center; }
-}
 
-
-    /* ② トグルボタンをスマホで左右中央に配置する */
-    .toggle-button {
-        display: block;      /* inline-blockから変更 */
-        margin-left: auto;   /* 左右をautoにすることで中央へ */
-        margin-right: auto;
-        width: fit-content;  /* 文字の幅に合わせる */
-        min-width: 200px;    /* 押しやすい最低限の横幅 */
+    /* ① 初心者向け解説（つまりどういうこと？）の改行を美しく調整 */
+    .content-section p {
+        margin-bottom: 24px;
+        display: block;
     }
+
+    /* ② トグルボタンをスマホで完璧に左右中央へ配置 */
+    .toggle-button {
+        display: block !important; /* 強制的にブロック化 */
+        margin-left: auto !important;
+        margin-right: auto !important;
+        width: fit-content;
+        min-width: 240px; /* 押しやすい幅 */
+        text-align: center;
+    }
+
+    /* ③ 見出しエラー対策に合わせたスタイルの微調整（h3へ） */
+    .summary-detail h3, .qna-item h3 {
+        font-size: 1.1rem;
+        color: var(--accent-color);
+        margin-bottom: 8px;
+    }
+}
