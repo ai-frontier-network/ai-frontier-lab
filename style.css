@@ -202,3 +202,13 @@ a:hover { text-decoration: underline; }
     .beginner-box { padding: 40px 20px; }
     .primary-button { width: 100%; text-align: center; }
 }
+
+
+    /* ② トグルボタンをスマホで左右中央に配置する */
+    .toggle-button {
+        display: block;      /* inline-blockから変更 */
+        margin-left: auto;   /* 左右をautoにすることで中央へ */
+        margin-right: auto;
+        width: fit-content;  /* 文字の幅に合わせる */
+        min-width: 200px;    /* 押しやすい最低限の横幅 */
+    }
