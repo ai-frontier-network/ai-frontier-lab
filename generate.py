@@ -12,7 +12,7 @@ from pydantic import BaseModel, Field
 from google import genai
 from google.genai import types
 import socket
-socket.setdefaulttimeout(30)  # 30秒間無反応なら自動でタイムアウトを発生させ、リトライ処理に移行させます
+socket.setdefaulttimeout(30)  # 30秒間無反応なら自動でタイムアウトを発生させ、フリーズを防止
 
 # ==========================================
 # 1. ログ・フォルダ初期設定
@@ -40,6 +40,7 @@ class ArticleOutputSchema(BaseModel):
     summary_1: str = Field(description="3行結論の1つ目。事実のみで構成され、推測や感想を含めない。体言止めで30文字以内。")
     summary_2: str = Field(description="3行結論の2つ目。事実のみで構成され、推測や感想を含めない。体言止めで30文字以内。")
     summary_3: str = Field(description="3行結論の3つ目。事実のみで構成され、推測や感想を含めない。体言止めで30文字以内。")
+    # ✨ 修正：Pydantic v2の仕様に合わせ、位置引数ではなく明示的に description= に変更
     summary_detail: str = Field(
         description="""
         500〜700文字程度。
@@ -50,7 +51,6 @@ class ArticleOutputSchema(BaseModel):
         """
     )
     explanation_intro: str = Field(description="初心者向け解説の導入。興味を惹く一文。50文字以内。")
-    # 🔴 改善①（解説長文化）：300〜500文字での詳細な「たとえ話」をスキーマで義務付け
     explanation_full: str = Field(description="初心者向け解説の続き。「たとえば〜」から始まる具体的な比喩を必ず含め、専門用語を使わずに中学生でも理解できるように優しく噛み砕いた詳細な解説。300〜500文字程度で、文章が短くならないよう具体例を多く記述してください。")
     action_1: str = Field(description="一般ユーザーや日本のビジネスマンへの具体的な影響や実践的な実用例。")
     action_2: str = Field(description="一般ユーザーや初心者が「まず今すぐ試すべきアクション」の具体的な推奨。")
@@ -141,6 +141,50 @@ def fetch_rss_feed(rss_url: str) -> list:
     return articles
 
 # ==========================================
+# 🔴 元記事の全文HTMLから「超安全」に本文のみを抽出する関数（最適化版）
+# ==========================================
+def fetch_full_article_text(url: str) -> str:
+    """元記事のURLからHTMLを安全にダウンロードし、不要なコードやヘッダーを排除して、純粋な本文テキストのみを抽出する"""
+    try:
+        logging.info(f"元記事の全文を取得中: {url}")
+        req = urllib.request.Request(
+            url,
+            headers={
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
+            }
+        )
+        with urllib.request.urlopen(req, timeout=15) as response:
+            html_content = response.read().decode('utf-8', errors='ignore')
+        
+        # 1. 不要なタグの中身（スクリプト、CSSスタイル、ヘッダー、フッター、ナビゲーション）を丸ごと消去
+        html_content = re.sub(r'<script[\s\S]*?>[\s\S]*?</script>', '', html_content)
+        html_content = re.sub(r'<style[\s\S]*?>[\s\S]*?</style>', '', html_content)
+        html_content = re.sub(r'<header[\s\S]*?>[\s\S]*?</header>', '', html_content)
+        html_content = re.sub(r'<footer[\s\S]*?>[\s\S]*?</footer>', '', html_content)
+        html_content = re.sub(r'<nav[\s\S]*?>[\s\S]*?</nav>', '', html_content)
+        
+        # ✨ 修正：ブロック要素の閉じタグを改行に変換し、段落を維持する
+        html_content = re.sub(r'</?(p|div|h1|h2|h3|h4|li|br)[^>]*>', '\n', html_content)
+
+        # 2. 残ったHTMLタグ（<>）をすべて除去してプレーンテキストにする
+        text = re.sub(r'<[^>]+>', ' ', html_content)
+        
+        # ✨ 修正：HTMLエンティティ（&amp; や &quot; など）を通常の文字にデコード
+        text = html.unescape(text)
+
+        # 3. 連続する余分な空白や改行を綺麗に整頓
+        text = re.sub(r'[ \t]+', ' ', text)  # 横方向の連続スペースを1つに
+        text = re.sub(r'\n\s*\n+', '\n', text).strip()  # 連続する空行を1つの改行に
+        
+        logging.info(f"全文取得に成功しました。文字数: {len(text)}")
+        return text
+
+    except Exception as e:
+        logging.error(f"元記事の全文取得に失敗しました: {e}")
+        return ""
+
+# ==========================================
 # 6. コア：AI要約 & HTML生成
 # ==========================================
 def run_article_generator(source_text: str, source_url: str, source_name: str) -> str:
@@ -153,9 +197,9 @@ def run_article_generator(source_text: str, source_url: str, source_name: str) -
         return ""
 
     client = genai.Client(api_key=api_key)
+    # ここは、何があっても変更しない「最強のフォールバック構成」モデル定義を維持
     model_name = os.environ.get("GEMINI_MODEL", "gemini-2.5-flash")
 
-    # 🔴 改善①（解説長文化）：プロンプトでの指示文を300〜500文字に超強化！
     prompt = f"""
     あなたは、「AI初心者でも直感的に理解できる」日本語コンテンツを作成する、日本最高レベルのAIニュース編集者です。
     以下の【厳守ルール】に厳密に従い、海外AI記事の日本語コンテンツを生成してください。
@@ -226,7 +270,6 @@ def run_article_generator(source_text: str, source_url: str, source_name: str) -
     article_dict = validated_data.model_dump()
     slug = sanitize_slug(article_dict["slug"])
 
-    # 🔴 改善③（1ファイル管理）：個別記事の生成・再ビルドを一元管理するためのヘルパー関数「build_page」を呼び出すように設計
     build_page(
         body_template_path="template_article.html",
         title=article_dict["title"],
@@ -249,7 +292,6 @@ def run_article_generator(source_text: str, source_url: str, source_name: str) -
         slug=slug
     )
 
-    # 中間データの保存
     output_json_path = os.path.join("data", f"{slug}.json")
     article_dict["source_url"] = source_url
     article_dict["source_name"] = source_name
@@ -267,12 +309,10 @@ def run_article_generator(source_text: str, source_url: str, source_name: str) -
         return ""
 
 # ==========================================
-# 🔴 新機能：【一元管理の心臓】全ページ共通レイアウト結合（ビルド）ヘルパー関数
+# レイアウト結合ヘルパー関数
 # ==========================================
 def build_page(body_template_path, title, date_iso, date_ja, source_url, source_name, replacements, output_path, is_article=False, slug=""):
-    """layout.html と各ページの中身（テンプレート）を合体させ、変数を安全に置換して書き出す"""
     try:
-        # 1. 唯一のデザインファイルである layout.html の読み込み
         if not os.path.exists("layout.html"):
             logging.error("layout.html が見つかりません。")
             return
@@ -280,7 +320,6 @@ def build_page(body_template_path, title, date_iso, date_ja, source_url, source_
         with open("layout.html", "r", encoding="utf-8") as f:
             layout_content = f.read()
 
-        # 2. 中身（ボディ）テンプレートの読み込み
         if not os.path.exists(body_template_path):
             logging.error(f"テンプレート '{body_template_path}' が見つかりません。")
             return
@@ -288,16 +327,13 @@ def build_page(body_template_path, title, date_iso, date_ja, source_url, source_
         with open(body_template_path, "r", encoding="utf-8") as f:
             body_content = f.read()
 
-        # 3. 合体！
         combined_content = layout_content.replace("{{BODY_CONTENT}}", body_content)
 
-        # 4. パスの自動調整（個別記事は /style.css、トップページは style.css など自動的に最適化）
         if is_article:
             combined_content = combined_content.replace("{{CSS_PATH}}", "/style.css")
             combined_content = combined_content.replace("{{JS_PATH}}", "/script.js")
             combined_content = combined_content.replace("{{EXPLANATION_INTRO}}", replacements.get("{{EXPLANATION_INTRO}}", ""))
             
-            # 個別記事用の構造化データを自動埋め込み
             structured_data = f"""
             <script type="application/ld+json">
             {{
@@ -315,7 +351,6 @@ def build_page(body_template_path, title, date_iso, date_ja, source_url, source_
             combined_content = combined_content.replace("{{JS_PATH}}", "script.js")
             combined_content = combined_content.replace("{{EXPLANATION_INTRO}}", replacements.get("{{EXPLANATION_INTRO}}", "最新のAIニュースをお届けします。"))
             
-            # トップ・アーカイブ用の構造化データを自動埋め込み
             structured_data = """
             <script type="application/ld+json">
             {
@@ -328,18 +363,15 @@ def build_page(body_template_path, title, date_iso, date_ja, source_url, source_
             """
             combined_content = combined_content.replace("{{STRUCTURED_DATA}}", structured_data)
 
-        # 5. 変数の置換
         combined_content = combined_content.replace("{{TITLE}}", title)
         combined_content = combined_content.replace("{{DATE_ISO}}", date_iso)
         combined_content = combined_content.replace("{{DATE_JA}}", date_ja)
         combined_content = combined_content.replace("{{SOURCE_URL}}", html.escape(source_url))
         combined_content = combined_content.replace("{{SOURCE_NAME}}", html.escape(source_name))
 
-        # 個別置換の実行
         for placeholder, value in replacements.items():
             combined_content = combined_content.replace(placeholder, value)
 
-        # 原子性を維持した書き出し（上書き）
         tmp_output_path = output_path + ".tmp"
         with open(tmp_output_path, "w", encoding="utf-8") as f:
             f.write(combined_content)
@@ -349,10 +381,9 @@ def build_page(body_template_path, title, date_iso, date_ja, source_url, source_
         logging.error(f"build_page 実行中にエラーが発生しました ({output_path}): {e}")
 
 # ==========================================
-# 7. template_index.html と template_article.html を基にした全自動一括再ビルド（SSGコンパイル）
+# 7. 全自動再ビルド（SSGコンパイル）
 # ==========================================
 def rebuild_index_and_rotate_storage():
-    """蓄積されたJSONから最新データを反映したサイト全体を全自動で再ビルドする"""
     try:
         json_files = [f for f in os.listdir("data") if f.endswith(".json")]
         all_articles = []
@@ -367,10 +398,8 @@ def rebuild_index_and_rotate_storage():
             except Exception as e:
                 logging.error(f"JSON読み込み失敗 ({j_file}): {e}")
 
-        # 最新順にソート
         all_articles.sort(key=lambda x: x[0], reverse=True)
 
-        # 容量パンク防止のローテーション物理削除
         if len(all_articles) > MAX_ARTICLES_LIMIT:
             logging.info(f"記事数が上限を超えたため、古いファイルを自動削除します。")
             to_delete = all_articles[MAX_ARTICLES_LIMIT:]
@@ -388,7 +417,6 @@ def rebuild_index_and_rotate_storage():
             logging.info("データフォルダが空のため、一覧の更新を保留します。")
             return
 
-        # 1. すべての個別記事HTMLを最新のテンプレートで一括再ビルド（デグレ完全防止）
         for mtime, art in all_articles:
             a_slug = sanitize_slug(art["slug"])
             a_date_ja = datetime.fromtimestamp(mtime).strftime("%Y年%m月%d日 %H:%M")
@@ -416,12 +444,10 @@ def rebuild_index_and_rotate_storage():
                 slug=a_slug
             )
 
-        # 2. ヒーロー記事（最新の1位）のデータを取得
         _, hero_art = all_articles[0]
         hero_date_ja = datetime.now().strftime("%Y年%m月%d日 %H:%M")
         hero_date_iso = datetime.now().strftime("%Y-%m-%dT%H:%M:%S+09:00")
 
-        # 3. 2番目以降の古い記事（2位〜最大30位）をグリッド用のカードに変換
         grid_articles = all_articles[1:]
         articles_html = ""
         for _, art in grid_articles:
@@ -430,7 +456,7 @@ def rebuild_index_and_rotate_storage():
             safe_slug = sanitize_slug(art["slug"])
             
             articles_html += f"""
-                <article class="article-card">
+                <article class="article-card fade-element">
                     <div class="article-meta">
                         <span>AI News</span>
                         <span>Latest Release</span>
@@ -441,7 +467,6 @@ def rebuild_index_and_rotate_storage():
                 </article>
             """
 
-        # 4. index.html をビルド（layout.html と template_index.html をガッチャンコ！）
         build_page(
             body_template_path="template_index.html",
             title=hero_art["title"],
@@ -464,14 +489,13 @@ def rebuild_index_and_rotate_storage():
             is_article=False
         )
 
-        # 5. index.html のビルド後に、過去の全件アーカイブページ「archive.html」を自動生成（デザイン完全一致）
         archive_articles_html = ""
         for _, art in all_articles:
             a_title = html.escape(art["title"])
             a_intro = html.escape(art["explanation_intro"])
             a_slug = sanitize_slug(art["slug"])
             archive_articles_html += f"""
-                <article class="article-card">
+                <article class="article-card fade-element">
                     <div class="article-meta">
                         <span>AI News</span>
                         <span>Archived</span>
@@ -482,7 +506,6 @@ def rebuild_index_and_rotate_storage():
                 </article>
             """
 
-        # index.html をベースにして、安全に archive.html のヒーローエリアをヘッダーへ置換
         if os.path.exists("index.html"):
             with open("index.html", "r", encoding="utf-8") as f:
                 index_content = f.read()
@@ -526,7 +549,6 @@ def main():
 
     new_article_created = False
     
-    # 挙動テスト用の模擬記事自動生成
     data_files = [f for f in os.listdir("data") if f.endswith(".json")]
     if not data_files:
         logging.info("データフォルダが空のため、初期挙動テスト用にデモ記事を自動生成します。")
@@ -544,7 +566,6 @@ def main():
         if slug:
             new_article_created = True
 
-    # RSSの通常監視
     MAX_PROCESS_PER_RUN = 1
     processed_count = 0
 
@@ -577,8 +598,19 @@ def main():
             logging.info(f"未処理の新着記事を検知（{feed['name']}）: {item['title']}")
             print(f"📡 新着記事を検知: {item['title']}")
 
+            # ✨ 修正：新機能の「全文取得関数」をここで呼び出す！
+            full_text = fetch_full_article_text(item["link"])
+            
+            # ✨ 修正：もし全文取得に失敗したら、安全のために既存のdescriptionをバックアップとして使う
+            if full_text:
+                source_material = full_text
+                logging.info("元記事の全文（スクレイピング結果）をAIの入力ソースに使用します。")
+            else:
+                source_material = item["description"]
+                logging.warning("全文取得に失敗したため、RSSのdescriptionを代替ソースとして使用します。")
+
             slug = run_article_generator(
-                source_text=item["description"],
+                source_text=source_material,  # 全文（またはdescription）を投入
                 source_url=item["link"],
                 source_name=feed["name"]
             )
@@ -594,8 +626,6 @@ def main():
                 time.sleep(5)
 
     save_history(history)
-
-    # 新着記事の有無に関わらず、起動されたら必ず最新データを基に「再ビルド」を実行！
     rebuild_index_and_rotate_storage()
 
 if __name__ == "__main__":
