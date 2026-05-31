@@ -131,7 +131,7 @@ a:hover { text-decoration: underline; }
     margin-top: 0;
 }
 .toggle-content.open {
-    max-height: 1200px; 
+    max-height: 2000px; 
     opacity: 1;
     margin-top: 20px;
 }
