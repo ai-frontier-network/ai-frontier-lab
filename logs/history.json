@@ -229,5 +229,10 @@
     "url": "https://openai.com/index/diagnose-rare-childhood-diseases",
     "processed_at": "2026-06-21T02:28:14.482113",
     "status": "published"
+  },
+  {
+    "url": "https://openai.com/index/samsung-electronics-chatgpt-codex-deployment",
+    "processed_at": "2026-06-22T02:32:01.817595",
+    "status": "published"
   }
 ]
