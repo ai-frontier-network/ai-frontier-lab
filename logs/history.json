@@ -244,5 +244,10 @@
     "url": "https://openai.com/index/helping-build-shared-standards-for-advanced-ai",
     "processed_at": "2026-06-24T01:58:29.691466",
     "status": "published"
+  },
+  {
+    "url": "https://openai.com/index/openai-broadcom-jalapeno-inference-chip",
+    "processed_at": "2026-06-25T02:02:05.325888",
+    "status": "published"
   }
 ]
