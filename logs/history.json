@@ -294,5 +294,16 @@
     "url": "https://openai.com/index/how-chatgpt-adoption-has-expanded",
     "processed_at": "2026-07-04T01:43:25.076036",
     "status": "published"
+  },
+  {
+    "url": "https://openai.com/index/genebench-pro/case-studies",
+    "processed_at": "2026-07-05T01:47:42.135435",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/introducing-genebench-pro",
+    "processed_at": "2026-07-05T01:47:54.106858",
+    "status": "published"
   }
 ]
