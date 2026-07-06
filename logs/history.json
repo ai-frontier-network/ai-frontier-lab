@@ -305,5 +305,10 @@
     "url": "https://openai.com/index/introducing-genebench-pro",
     "processed_at": "2026-07-05T01:47:54.106858",
     "status": "published"
+  },
+  {
+    "url": "https://openai.com/index/core-dump-epidemiology-data-infrastructure-bug",
+    "processed_at": "2026-07-06T01:54:18.189917",
+    "status": "published"
   }
 ]
