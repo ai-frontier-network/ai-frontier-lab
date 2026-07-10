@@ -325,5 +325,10 @@
     "url": "https://openai.com/index/government-national-security-partnerships",
     "processed_at": "2026-07-09T01:30:35.673783",
     "status": "published"
+  },
+  {
+    "url": "https://openai.com/index/gpt-5-6-preferred-model-microsoft-365-copilot",
+    "processed_at": "2026-07-10T01:28:20.236590",
+    "status": "published"
   }
 ]
