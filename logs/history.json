@@ -380,5 +380,10 @@
     "url": "https://openai.com/index/why-teens-deserve-access-safe-ai",
     "processed_at": "2026-07-20T01:25:07.492819",
     "status": "published"
+  },
+  {
+    "url": "https://openai.com/index/safety-alignment-long-horizon-models",
+    "processed_at": "2026-07-21T01:21:27.321871",
+    "status": "published"
   }
 ]
