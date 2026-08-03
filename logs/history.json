@@ -445,5 +445,16 @@
     "url": "https://openai.com/index/ten-advances-in-mathematics",
     "processed_at": "2026-08-02T01:26:09.850023",
     "status": "published"
+  },
+  {
+    "url": "https://openai.com/index/building-abundant-intelligence",
+    "processed_at": "2026-08-03T01:26:31.551758",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/unive",
+    "processed_at": "2026-08-03T01:26:47.337127",
+    "status": "published"
   }
 ]
