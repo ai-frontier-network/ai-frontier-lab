@@ -456,5 +456,10 @@
     "url": "https://openai.com/index/unive",
     "processed_at": "2026-08-03T01:26:47.337127",
     "status": "published"
+  },
+  {
+    "url": "https://openai.com/index/continuous-voice-interaction-with-gpt-live",
+    "processed_at": "2026-08-04T01:16:14.831482",
+    "status": "published"
   }
 ]
