@@ -551,5 +551,10 @@
     "url": "https://openai.com/index/stampli",
     "processed_at": "2026-08-22T00:30:29.726030",
     "status": "published"
+  },
+  {
+    "url": "https://openai.com/index/offering-zero-data-retention-for-frontier-models",
+    "processed_at": "2026-08-23T00:33:18.102004",
+    "status": "published"
   }
 ]
