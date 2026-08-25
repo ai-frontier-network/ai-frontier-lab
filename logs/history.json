@@ -561,5 +561,10 @@
     "url": "https://openai.com/index/replit",
     "processed_at": "2026-08-24T00:32:21.686790",
     "status": "published"
+  },
+  {
+    "url": "https://openai.com/index/gpt-5-6-in-kiro",
+    "processed_at": "2026-08-25T00:33:25.424089",
+    "status": "published"
   }
 ]
