@@ -631,5 +631,10 @@
     "url": "https://openai.com/index/an-alien-mind",
     "processed_at": "2026-09-07T01:33:18.116842",
     "status": "published"
+  },
+  {
+    "url": "https://openai.com/index/supporting-independent-journalism-in-ukraine",
+    "processed_at": "2026-09-08T01:43:35.537642",
+    "status": "published"
   }
 ]
