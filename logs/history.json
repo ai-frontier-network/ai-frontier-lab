@@ -636,5 +636,10 @@
     "url": "https://openai.com/index/supporting-independent-journalism-in-ukraine",
     "processed_at": "2026-09-08T01:43:35.537642",
     "status": "published"
+  },
+  {
+    "url": "https://openai.com/index/codex-quantum-computing-experiments",
+    "processed_at": "2026-09-09T01:50:19.576934",
+    "status": "published"
   }
 ]
