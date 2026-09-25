@@ -716,5 +716,16 @@
     "url": "https://blog.google/innovation-and-ai/technology/research/google-beam-expansion/",
     "processed_at": "2026-09-24T01:53:33.339256",
     "status": "published"
+  },
+  {
+    "url": "https://openai.com/index/two-years-of-openai-academy",
+    "processed_at": "2026-09-25T02:09:54.892486",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/openai-extends-cyber-access-to-ukraine-for-civilian-defense",
+    "processed_at": "2026-09-25T02:10:07.326509",
+    "status": "published"
   }
 ]
