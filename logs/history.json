@@ -732,5 +732,10 @@
     "url": "https://openai.com/index/proaction",
     "processed_at": "2026-09-26T02:15:40.737313",
     "status": "published"
+  },
+  {
+    "url": "https://openai.com/index/sam-altman-un-security-council-remarks",
+    "processed_at": "2026-09-27T02:09:40.229480",
+    "status": "published"
   }
 ]
