@@ -797,5 +797,10 @@
     "url": "https://openai.com/index/oracle",
     "processed_at": "2026-10-09T03:21:34.010589",
     "status": "published"
+  },
+  {
+    "url": "https://openai.com/index/sophos",
+    "processed_at": "2026-10-10T03:01:30.194961",
+    "status": "published"
   }
 ]
