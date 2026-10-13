@@ -812,5 +812,10 @@
     "url": "https://openai.com/index/pollo-ai",
     "processed_at": "2026-10-12T02:56:09.666997",
     "status": "published"
+  },
+  {
+    "url": "https://openai.com/index/legalon-halves-codex-costs",
+    "processed_at": "2026-10-13T04:11:16.854024",
+    "status": "published"
   }
 ]
