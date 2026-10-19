@@ -842,5 +842,10 @@
     "url": "https://openai.com/index/benefit-street-partners",
     "processed_at": "2026-10-18T01:48:48.771530",
     "status": "published"
+  },
+  {
+    "url": "https://openai.com/index/stack-overflow-chatgpt-plugin",
+    "processed_at": "2026-10-19T02:05:58.795251",
+    "status": "published"
   }
 ]
