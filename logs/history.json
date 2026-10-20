@@ -847,5 +847,10 @@
     "url": "https://openai.com/index/stack-overflow-chatgpt-plugin",
     "processed_at": "2026-10-19T02:05:58.795251",
     "status": "published"
+  },
+  {
+    "url": "https://openai.com/index/low-resource-programming-languages",
+    "processed_at": "2026-10-20T02:21:52.472243",
+    "status": "published"
   }
 ]
