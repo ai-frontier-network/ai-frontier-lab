@@ -857,5 +857,10 @@
     "url": "https://openai.com/index/ted-taylor-restaurant",
     "processed_at": "2026-10-21T02:15:22.567915",
     "status": "published"
+  },
+  {
+    "url": "https://blog.google/company-news/inside-google/around-the-globe/google-asia/e-conomy-sea-report-2026/",
+    "processed_at": "2026-10-22T02:09:47.296035",
+    "status": "published"
   }
 ]
