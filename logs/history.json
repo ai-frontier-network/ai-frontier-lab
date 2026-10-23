@@ -862,5 +862,22 @@
     "url": "https://blog.google/company-news/inside-google/around-the-globe/google-asia/e-conomy-sea-report-2026/",
     "processed_at": "2026-10-22T02:09:47.296035",
     "status": "published"
+  },
+  {
+    "url": "https://openai.com/index/decisions-api",
+    "processed_at": "2026-10-23T02:15:04.693657",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/forward-deployed-engineering-means",
+    "processed_at": "2026-10-23T02:15:04.693697",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/uber-chatgpt-work-rollout",
+    "processed_at": "2026-10-23T02:15:20.546288",
+    "status": "published"
   }
 ]
