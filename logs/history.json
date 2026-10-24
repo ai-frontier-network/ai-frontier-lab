@@ -879,5 +879,10 @@
     "url": "https://openai.com/index/uber-chatgpt-work-rollout",
     "processed_at": "2026-10-23T02:15:20.546288",
     "status": "published"
+  },
+  {
+    "url": "https://openai.com/index/scaling-storage-one-billion-users-part-two",
+    "processed_at": "2026-10-24T02:13:39.009221",
+    "status": "published"
   }
 ]
