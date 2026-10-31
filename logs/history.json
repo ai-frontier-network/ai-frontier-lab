@@ -914,5 +914,10 @@
     "url": "https://openai.com/index/updated-model-spec",
     "processed_at": "2026-10-30T03:12:40.488130",
     "status": "published"
+  },
+  {
+    "url": "https://openai.com/index/helping-websites-express-ai-training-preferences",
+    "processed_at": "2026-10-31T02:57:47.311717",
+    "status": "published"
   }
 ]
