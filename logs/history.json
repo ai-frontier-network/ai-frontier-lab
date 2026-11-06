@@ -944,5 +944,1637 @@
     "url": "https://openai.com/index/openai-to-acquire-pierre",
     "processed_at": "2026-11-05T03:56:46.929085",
     "status": "published"
+  },
+  {
+    "url": "https://openai.com/index/the-future-of-the-firm",
+    "processed_at": "2026-11-06T03:55:38.466633",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/introducing-gpt-6-1-terra",
+    "processed_at": "2026-11-06T03:56:07.654591",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/bio-bug-bounty",
+    "processed_at": "2026-11-06T04:13:37.395676",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/introducing-gpt-live",
+    "processed_at": "2026-11-06T04:13:52.166169",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/biodefense-in-the-intelligence-age",
+    "processed_at": "2026-11-06T04:16:23.464252",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/academy/chatgpt-sites",
+    "processed_at": "2026-11-06T04:17:00.571793",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/gpt-5-2-codex-system-card",
+    "processed_at": "2026-11-06T04:45:48.958306",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/business/learn/using-codex-across-the-software-development-lifecycle",
+    "processed_at": "2026-11-06T04:51:04.596641",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/business/learn/how-openai-uses-chatgpt-atlas-at-work",
+    "processed_at": "2026-11-06T04:52:10.575281",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/group-chats-in-chatgpt",
+    "processed_at": "2026-11-06T04:52:47.429008",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/introducing-stargate-uk",
+    "processed_at": "2026-11-06T05:02:35.734533",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/teen-safety-freedom-and-privacy",
+    "processed_at": "2026-11-06T05:02:35.734556",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/global-affairs/learning-accelerator",
+    "processed_at": "2026-11-06T05:04:55.045284",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/gpt-5-coding-design",
+    "processed_at": "2026-11-06T05:05:54.022870",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/gpt-5-creative-writing",
+    "processed_at": "2026-11-06T05:05:54.022893",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/gpt-5-medical-research",
+    "processed_at": "2026-11-06T05:05:54.022912",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/gpt-5-cursor",
+    "processed_at": "2026-11-06T05:05:54.022922",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/gpt-5-first-look",
+    "processed_at": "2026-11-06T05:06:01.346530",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/gpt-5-amgen",
+    "processed_at": "2026-11-06T05:06:15.946025",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/announcing-devday-2025",
+    "processed_at": "2026-11-06T05:07:51.396556",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/global-affairs/intellectual-freedom-by-design",
+    "processed_at": "2026-11-06T05:09:19.409516",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/openai-deutschland",
+    "processed_at": "2026-11-06T05:12:16.116807",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/new-tools-and-features-in-the-responses-api",
+    "processed_at": "2026-11-06T05:12:30.811993",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/introducing-codex",
+    "processed_at": "2026-11-06T05:12:30.812016",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/expedia-jochen-koedijk",
+    "processed_at": "2026-11-06T05:12:38.223743",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/business/learn/personalize-chatgpt-with-custom-instructions",
+    "processed_at": "2026-11-06T05:12:45.514651",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/business/learn/automate-complex-workflows-with-openai-o3",
+    "processed_at": "2026-11-06T05:13:07.528590",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/leadership-expansion-with-fidji-simo",
+    "processed_at": "2026-11-06T05:13:07.528613",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/global-affairs/response-to-department-of-energy",
+    "processed_at": "2026-11-06T05:13:07.528625",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/global-affairs/openai-for-countries",
+    "processed_at": "2026-11-06T05:13:22.241855",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/lowes-chandhu-nair",
+    "processed_at": "2026-11-06T05:13:44.246690",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/expanding-on-sycophancy",
+    "processed_at": "2026-11-06T05:13:44.246714",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/speak-connor-zwick",
+    "processed_at": "2026-11-06T05:14:06.430859",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/introducing-o3-and-o4-mini",
+    "processed_at": "2026-11-06T05:14:13.734681",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/thinking-with-images",
+    "processed_at": "2026-11-06T05:14:13.734705",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/nonprofit-commission-advisors",
+    "processed_at": "2026-11-06T05:14:21.125819",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/browsecomp",
+    "processed_at": "2026-11-06T05:14:57.871967",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/openai-pioneers-program",
+    "processed_at": "2026-11-06T05:14:57.871990",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/business/learn/writing-with-canvas-in-chatgpt",
+    "processed_at": "2026-11-06T05:14:57.872002",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/business/learn/shipping-code-to-your-ide-with-chatgpt",
+    "processed_at": "2026-11-06T05:14:57.872012",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/canva-cam-adams",
+    "processed_at": "2026-11-06T05:15:12.689558",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/global-affairs/response-to-uk-copyright-consultation",
+    "processed_at": "2026-11-06T05:15:34.762319",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/zendesk",
+    "processed_at": "2026-11-06T05:15:42.130142",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/hebbia",
+    "processed_at": "2026-11-06T05:16:03.946576",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/affective-use-study",
+    "processed_at": "2026-11-06T05:16:11.301673",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/eliseai-minna-song",
+    "processed_at": "2026-11-06T05:16:26.032067",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/ly-corporation",
+    "processed_at": "2026-11-06T05:16:40.663935",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/new-tools-for-building-agents",
+    "processed_at": "2026-11-06T05:16:40.663959",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/nubank",
+    "processed_at": "2026-11-06T05:16:47.938751",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/factory",
+    "processed_at": "2026-11-06T05:16:47.938774",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/introducing-nextgenai",
+    "processed_at": "2026-11-06T05:16:55.305183",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/global-affairs/1000-scientist-ai-jam-session",
+    "processed_at": "2026-11-06T05:16:55.305208",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/gpt-4-5-system-card",
+    "processed_at": "2026-11-06T05:17:02.571859",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/endex",
+    "processed_at": "2026-11-06T05:17:02.571904",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/global-affairs/disrupting-malicious-uses-of-ai",
+    "processed_at": "2026-11-06T05:17:09.935354",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/uber-enables-outstanding-experiences",
+    "processed_at": "2026-11-06T05:17:09.935378",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/swe-lancer",
+    "processed_at": "2026-11-06T05:17:09.935389",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/fanatics-betting-gaming-andrea-ellis",
+    "processed_at": "2026-11-06T05:17:17.201574",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/wayfair-fiona-tan",
+    "processed_at": "2026-11-06T05:17:17.201598",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/rogo",
+    "processed_at": "2026-11-06T05:17:17.201609",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/sharing-the-latest-model-spec",
+    "processed_at": "2026-11-06T05:17:17.201620",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/fishing-for-first-timers",
+    "processed_at": "2026-11-06T05:17:46.505346",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/my-dog-the-math-tutor",
+    "processed_at": "2026-11-06T05:17:46.505371",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/ten-tiny-canvases",
+    "processed_at": "2026-11-06T05:17:46.505381",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/deep-research",
+    "processed_at": "2026-11-06T05:17:53.875114",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/openai-o3-mini",
+    "processed_at": "2026-11-06T05:18:52.381788",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/computer-using-agent",
+    "processed_at": "2026-11-06T05:19:07.120816",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/introducing-operator",
+    "processed_at": "2026-11-06T05:19:07.120836",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/trading-inference-time-compute-for-adversarial-robustness",
+    "processed_at": "2026-11-06T05:19:21.653356",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/announcing-the-stargate-project",
+    "processed_at": "2026-11-06T05:19:28.910670",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/adebayo-ogunlesi-joins-openais-board-of-directors",
+    "processed_at": "2026-11-06T05:19:36.208882",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/why-our-structure-must-evolve-to-advance-our-mission",
+    "processed_at": "2026-11-06T05:19:36.208905",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/o1-and-new-tools-for-developers",
+    "processed_at": "2026-11-06T05:19:43.455603",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/put-ai-to-work-for-your-product-team",
+    "processed_at": "2026-11-06T05:19:57.988984",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/sora-lyndon-barrois",
+    "processed_at": "2026-11-06T05:19:57.989011",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/sora-vallee-duhamel",
+    "processed_at": "2026-11-06T05:19:57.989024",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/sora-minne-atairu",
+    "processed_at": "2026-11-06T05:20:05.358664",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/introducing-chatgpt-pro",
+    "processed_at": "2026-11-06T05:20:05.358684",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/morgan-stanley",
+    "processed_at": "2026-11-06T05:20:20.193906",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/advancing-red-teaming-with-people-and-ai",
+    "processed_at": "2026-11-06T05:20:20.193932",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/grab",
+    "processed_at": "2026-11-06T05:20:20.193944",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/openai-en-france",
+    "processed_at": "2026-11-06T05:20:27.466845",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/introducing-chatgpt-search",
+    "processed_at": "2026-11-06T05:20:34.842105",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/promega",
+    "processed_at": "2026-11-06T05:20:34.842128",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/business/put-ai-to-work-for-marketing-teams",
+    "processed_at": "2026-11-06T05:20:34.842139",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/decagon",
+    "processed_at": "2026-11-06T05:20:42.169368",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/lenfest-institute",
+    "processed_at": "2026-11-06T05:20:49.587020",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/hearst",
+    "processed_at": "2026-11-06T05:21:11.846717",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/introducing-canvas",
+    "processed_at": "2026-11-06T05:21:11.846740",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/introducing-the-realtime-api",
+    "processed_at": "2026-11-06T05:21:26.579095",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/introducing-vision-to-the-fine-tuning-api",
+    "processed_at": "2026-11-06T05:21:26.579119",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/api-prompt-caching",
+    "processed_at": "2026-11-06T05:21:26.579131",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/altera",
+    "processed_at": "2026-11-06T05:21:34.038816",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/business/put-ai-to-work-automate-and-scale-financial-operations",
+    "processed_at": "2026-11-06T05:22:54.535978",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/state-of-minnesota",
+    "processed_at": "2026-11-06T05:23:01.906662",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/gedi",
+    "processed_at": "2026-11-06T05:23:01.906685",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/mercado-libre",
+    "processed_at": "2026-11-06T05:23:01.906696",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/genmab",
+    "processed_at": "2026-11-06T05:23:01.906708",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/arco-education",
+    "processed_at": "2026-11-06T05:23:01.906718",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/update-on-safety-and-security-practices",
+    "processed_at": "2026-11-06T05:23:01.906729",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/introducing-openai-o1-preview",
+    "processed_at": "2026-11-06T05:23:01.906739",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/learning-to-reason-with-llms",
+    "processed_at": "2026-11-06T05:23:01.906749",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/openai-o1-mini-advancing-cost-efficient-reasoning",
+    "processed_at": "2026-11-06T05:23:01.906760",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/openai-o1-contributions",
+    "processed_at": "2026-11-06T05:23:01.906769",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/o1-quantum-physics",
+    "processed_at": "2026-11-06T05:23:16.451200",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/o1-economics",
+    "processed_at": "2026-11-06T05:23:16.451220",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/business/put-ai-to-work-lessons-from-hundreds-of-successful-deployments",
+    "processed_at": "2026-11-06T05:23:16.451232",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/ada",
+    "processed_at": "2026-11-06T05:23:16.451242",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/business/fine-tuning-gpt-4o-webinar",
+    "processed_at": "2026-11-06T05:23:23.846181",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/conde-nast",
+    "processed_at": "2026-11-06T05:23:23.846202",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/gpt-4o-fine-tuning",
+    "processed_at": "2026-11-06T05:23:23.846212",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/upwork",
+    "processed_at": "2026-11-06T05:23:23.846234",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/disrupting-a-covert-iranian-influence-operation",
+    "processed_at": "2026-11-06T05:23:23.846245",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/gpt-4o-system-card",
+    "processed_at": "2026-11-06T05:23:53.464317",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/rakuten-2024",
+    "processed_at": "2026-11-06T05:24:00.821946",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/gpt-4o-mini-advancing-cost-efficient-intelligence",
+    "processed_at": "2026-11-06T05:24:22.809285",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/openai-acquires-rockset",
+    "processed_at": "2026-11-06T05:24:59.554429",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/empowering-defenders-through-our-cybersecurity-grant-program",
+    "processed_at": "2026-11-06T05:24:59.554455",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/clay",
+    "processed_at": "2026-11-06T05:25:28.883002",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/openai-and-apple-announce-partnership",
+    "processed_at": "2026-11-06T05:25:43.633489",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/openai-welcomes-cfo-cpo",
+    "processed_at": "2026-11-06T05:25:43.633513",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/expanding-on-how-voice-engine-works-and-our-safety-research",
+    "processed_at": "2026-11-06T05:25:43.633530",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/10bedicu",
+    "processed_at": "2026-11-06T05:25:43.633542",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/introducing-chatgpt-edu",
+    "processed_at": "2026-11-06T05:26:05.844490",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/newsroom-ai-catalyst-global-program-with-wan-ifra",
+    "processed_at": "2026-11-06T05:26:13.153135",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/openai-board-forms-safety-and-security-committee",
+    "processed_at": "2026-11-06T05:26:27.807674",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/openai-and-reddit-partnership",
+    "processed_at": "2026-11-06T05:26:57.360081",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/jakub-pachocki-announced-as-chief-scientist",
+    "processed_at": "2026-11-06T05:27:04.673391",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/spring-update",
+    "processed_at": "2026-11-06T05:27:12.069263",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/introducing-the-model-spec",
+    "processed_at": "2026-11-06T05:27:19.475750",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/content-partnership-with-financial-times",
+    "processed_at": "2026-11-06T05:28:18.387667",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/moderna",
+    "processed_at": "2026-11-06T05:28:18.387692",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/introducing-chatgpt-and-whisper-apis",
+    "processed_at": "2026-11-06T05:28:25.730356",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/child-safety-adopting-sbd-principles",
+    "processed_at": "2026-11-06T05:28:33.027145",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/klarna",
+    "processed_at": "2026-11-06T05:28:47.573261",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/harvey",
+    "processed_at": "2026-11-06T05:28:54.954642",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/oscar",
+    "processed_at": "2026-11-06T05:28:54.954666",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/start-using-chatgpt-instantly",
+    "processed_at": "2026-11-06T05:28:54.954677",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/zelma",
+    "processed_at": "2026-11-06T05:29:02.242116",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/jetbrains",
+    "processed_at": "2026-11-06T05:29:09.506689",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/salesforce",
+    "processed_at": "2026-11-06T05:29:09.506711",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/superhuman",
+    "processed_at": "2026-11-06T05:29:16.947542",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/healthify",
+    "processed_at": "2026-11-06T05:29:16.947565",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/review-completed-altman-brockman-to-continue-to-lead-openai",
+    "processed_at": "2026-11-06T05:29:24.206824",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/openai-announces-new-members-to-board-of-directors",
+    "processed_at": "2026-11-06T05:29:24.206848",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/lifespan",
+    "processed_at": "2026-11-06T05:29:24.206859",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/paradigm",
+    "processed_at": "2026-11-06T05:29:24.206869",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/match-group",
+    "processed_at": "2026-11-06T05:29:24.206878",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/openai-elon-musk",
+    "processed_at": "2026-11-06T05:29:24.206888",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/disrupting-malicious-uses-of-ai-by-state-affiliated-threat-actors",
+    "processed_at": "2026-11-06T05:29:31.619766",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/new-embedding-models-and-api-updates",
+    "processed_at": "2026-11-06T05:29:46.227336",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/digital-green",
+    "processed_at": "2026-11-06T05:30:00.942024",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/introducing-the-gpt-store",
+    "processed_at": "2026-11-06T05:30:00.942048",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/whoop",
+    "processed_at": "2026-11-06T05:30:15.599978",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/summer-health",
+    "processed_at": "2026-11-06T05:30:15.600000",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/practices-for-governing-agentic-ai-systems",
+    "processed_at": "2026-11-06T05:30:22.873595",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/openai-announces-leadership-transition",
+    "processed_at": "2026-11-06T05:30:44.667766",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/data-partnerships",
+    "processed_at": "2026-11-06T05:30:44.667789",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/ironclad",
+    "processed_at": "2026-11-06T05:31:21.107271",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/retool",
+    "processed_at": "2026-11-06T05:31:21.107293",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/dall-e-3-system-card",
+    "processed_at": "2026-11-06T05:31:28.562857",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/chatgpt-can-now-see-hear-and-speak",
+    "processed_at": "2026-11-06T05:31:28.562880",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/gpt-4v-system-card",
+    "processed_at": "2026-11-06T05:31:28.562891",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/introducing-openai-dublin",
+    "processed_at": "2026-11-06T05:31:35.837768",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/introducing-chatgpt-enterprise",
+    "processed_at": "2026-11-06T05:31:50.577461",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/openai-partners-with-scale-to-provide-support-for-enterprises-fine-tuning-models",
+    "processed_at": "2026-11-06T05:31:50.577484",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/gpt-3-5-turbo-fine-tuning-and-api-updates",
+    "processed_at": "2026-11-06T05:31:50.577496",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/openai-acquires-global-illumination",
+    "processed_at": "2026-11-06T05:31:50.577509",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/confidence-building-measures-for-artificial-intelligence",
+    "processed_at": "2026-11-06T05:31:57.867504",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/viable",
+    "processed_at": "2026-11-06T05:32:27.320546",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/frontier-ai-regulation",
+    "processed_at": "2026-11-06T05:32:27.320570",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/our-approach-to-ai-safety",
+    "processed_at": "2026-11-06T05:33:48.022831",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/march-20-chatgpt-outage",
+    "processed_at": "2026-11-06T05:33:48.022856",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/gpts-are-gpts",
+    "processed_at": "2026-11-06T05:33:55.305335",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/government-of-iceland",
+    "processed_at": "2026-11-06T05:34:02.730058",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/be-my-eyes",
+    "processed_at": "2026-11-06T05:34:02.730081",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/stripe",
+    "processed_at": "2026-11-06T05:34:02.730093",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/duolingo",
+    "processed_at": "2026-11-06T05:34:02.730103",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/khan-academy",
+    "processed_at": "2026-11-06T05:34:02.730114",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/new-ai-classifier-for-indicating-ai-written-text",
+    "processed_at": "2026-11-06T05:34:32.425647",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/openai-and-microsoft-extend-partnership",
+    "processed_at": "2026-11-06T05:34:32.425677",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/yabble",
+    "processed_at": "2026-11-06T05:34:39.701903",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/waymark",
+    "processed_at": "2026-11-06T05:34:39.701927",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/inworld-ai-DO-NOT-PUBLISH",
+    "processed_at": "2026-11-06T05:34:39.701939",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/the-power-of-continuous-learning",
+    "processed_at": "2026-11-06T05:34:39.701949",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/point-e",
+    "processed_at": "2026-11-06T05:34:39.701960",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/discovering-the-minutiae-of-backend-systems",
+    "processed_at": "2026-11-06T05:34:46.973526",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/dall-e-api-now-available-in-public-beta",
+    "processed_at": "2026-11-06T05:34:54.373808",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/scaling-laws-for-reward-model-overoptimization",
+    "processed_at": "2026-11-06T05:34:54.373832",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/dall-e-introducing-outpainting",
+    "processed_at": "2026-11-06T05:35:09.094855",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/efficient-training-of-language-models-to-fill-in-the-middle",
+    "processed_at": "2026-11-06T05:35:23.805166",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/a-hazard-analysis-framework-for-code-synthesis-large-language-models",
+    "processed_at": "2026-11-06T05:35:23.805190",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/evolution-through-large-models",
+    "processed_at": "2026-11-06T05:36:03.369666",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/teaching-models-to-express-their-uncertainty-in-words",
+    "processed_at": "2026-11-06T05:36:25.534891",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/hierarchical-text-conditional-image-generation-with-clip-latents",
+    "processed_at": "2026-11-06T05:36:47.599455",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/economic-impacts-research",
+    "processed_at": "2026-11-06T05:37:02.280816",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/economic-impacts",
+    "processed_at": "2026-11-06T05:37:09.681451",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/text-and-code-embeddings-by-contrastive-pre-training",
+    "processed_at": "2026-11-06T05:37:31.656356",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/customizing-gpt-3",
+    "processed_at": "2026-11-06T05:37:39.054311",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/api-no-waitlist",
+    "processed_at": "2026-11-06T05:37:46.331061",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/summarizing-books",
+    "processed_at": "2026-11-06T05:37:53.603968",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/truthfulqa",
+    "processed_at": "2026-11-06T05:37:53.603992",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/helen-toner-joins",
+    "processed_at": "2026-11-06T05:37:53.604004",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/evaluating-large-language-models-trained-on-code",
+    "processed_at": "2026-11-06T05:38:08.139939",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/understanding-the-capabilities-limitations-and-societal-impact-of-large-language-models",
+    "processed_at": "2026-11-06T05:38:44.973537",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/organizational-update",
+    "processed_at": "2026-11-06T05:39:06.887496",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/openai-licenses-gpt-3-technology-to-microsoft",
+    "processed_at": "2026-11-06T05:39:06.887521",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/generative-language-modeling-for-automated-theorem-proving",
+    "processed_at": "2026-11-06T05:39:06.887533",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/openai-api",
+    "processed_at": "2026-11-06T05:39:36.249731",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/language-models-are-few-shot-learners",
+    "processed_at": "2026-11-06T05:39:36.249755",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/openai-pytorch",
+    "processed_at": "2026-11-06T05:40:05.554597",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/scaling-laws-for-neural-language-models",
+    "processed_at": "2026-11-06T05:40:05.554621",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/dota-2-with-large-scale-deep-reinforcement-learning",
+    "processed_at": "2026-11-06T05:40:05.554632",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/benchmarking-safe-exploration-in-deep-reinforcement-learning",
+    "processed_at": "2026-11-06T05:40:20.350324",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/openai-scholars-2020",
+    "processed_at": "2026-11-06T05:40:42.408212",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/symposium-2019",
+    "processed_at": "2026-11-06T05:41:33.416939",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/transfer-of-adversarial-robustness-between-perturbation-types",
+    "processed_at": "2026-11-06T05:41:48.122038",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/openai-five-finals",
+    "processed_at": "2026-11-06T05:42:10.319582",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/computational-limitations-in-robust-classification-and-win-win-results",
+    "processed_at": "2026-11-06T05:43:08.918645",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/plan-online-learn-offline",
+    "processed_at": "2026-11-06T05:43:45.642068",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/openai-fellows-interns-2019",
+    "processed_at": "2026-11-06T05:44:07.502757",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/ffjord",
+    "processed_at": "2026-11-06T05:44:07.502780",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/openai-scholars-2018-final-projects",
+    "processed_at": "2026-11-06T05:44:07.502791",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/large-scale-study-of-curiosity-driven-learning",
+    "processed_at": "2026-11-06T05:44:14.758815",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/learning-dexterity",
+    "processed_at": "2026-11-06T05:44:22.068922",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/variational-option-discovery-algorithms",
+    "processed_at": "2026-11-06T05:44:22.068947",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/openai-five-benchmark",
+    "processed_at": "2026-11-06T05:44:29.491987",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/openai-five",
+    "processed_at": "2026-11-06T05:44:44.091360",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/learning-policy-representations-in-multiagent-systems",
+    "processed_at": "2026-11-06T05:44:51.352699",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/gamepad",
+    "processed_at": "2026-11-06T05:44:58.602949",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/gotta-learn-fast",
+    "processed_at": "2026-11-06T05:45:35.292856",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/variance-reduction-for-policy-gradient-with-action-dependent-factorized-baselines",
+    "processed_at": "2026-11-06T05:45:42.700817",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/improving-gans-using-optimal-transport",
+    "processed_at": "2026-11-06T05:45:42.700840",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/on-first-order-meta-learning-algorithms",
+    "processed_at": "2026-11-06T05:45:49.966630",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/some-considerations-on-learning-to-explore-via-meta-reinforcement-learning",
+    "processed_at": "2026-11-06T05:46:04.516056",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/multi-goal-reinforcement-learning",
+    "processed_at": "2026-11-06T05:46:11.963985",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/openai-supporters",
+    "processed_at": "2026-11-06T05:46:19.325695",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/scaling-kubernetes-to-2500-nodes",
+    "processed_at": "2026-11-06T05:46:48.527142",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/learning-sparse-neural-networks-through-l0-regularization",
+    "processed_at": "2026-11-06T05:46:55.973982",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/interpretable-and-pedagogical-examples",
+    "processed_at": "2026-11-06T05:46:55.974006",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/asymmetric-actor-critic-for-image-based-robot-learning",
+    "processed_at": "2026-11-06T05:47:10.611650",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/sim-to-real-transfer-of-robotic-control-with-dynamics-randomization",
+    "processed_at": "2026-11-06T05:47:10.611674",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/domain-randomization-and-generative-models-for-robotic-grasping",
+    "processed_at": "2026-11-06T05:47:10.611687",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/nonlinear-computation-in-deep-linear-networks",
+    "processed_at": "2026-11-06T05:47:25.141615",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/learning-with-opponent-learning-awareness",
+    "processed_at": "2026-11-06T05:47:32.532660",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/hindsight-experience-replay",
+    "processed_at": "2026-11-06T05:48:23.873264",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/teacher-student-curriculum-learning",
+    "processed_at": "2026-11-06T05:48:23.873287",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/ucb-exploration-via-q-ensembles",
+    "processed_at": "2026-11-06T05:48:45.873765",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/roboschool",
+    "processed_at": "2026-11-06T05:49:00.421965",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/equivalence-between-policy-gradients-and-soft-q-learning",
+    "processed_at": "2026-11-06T05:49:00.421989",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/stochastic-neural-networks-for-hierarchical-reinforcement-learning",
+    "processed_at": "2026-11-06T05:49:00.422001",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/one-shot-imitation-learning",
+    "processed_at": "2026-11-06T05:49:22.620107",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/learning-to-communicate",
+    "processed_at": "2026-11-06T05:49:30.042050",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/emergence-of-grounded-compositional-language-in-multi-agent-populations",
+    "processed_at": "2026-11-06T05:49:30.042094",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/prediction-and-control-with-temporal-segment-models",
+    "processed_at": "2026-11-06T05:49:30.042106",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/third-person-imitation-learning",
+    "processed_at": "2026-11-06T05:49:30.042116",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/adversarial-attacks-on-neural-network-policies",
+    "processed_at": "2026-11-06T05:49:37.441876",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/pixelcnn-plus-plus",
+    "processed_at": "2026-11-06T05:49:44.717288",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/exploration",
+    "processed_at": "2026-11-06T05:49:59.382855",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/openai-and-microsoft",
+    "processed_at": "2026-11-06T05:49:59.382879",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/on-the-quantitative-analysis-of-decoder-based-generative-models",
+    "processed_at": "2026-11-06T05:49:59.382891",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/a-connection-between-generative-adversarial-networks-inverse-reinforcement-learning-and-energy-based-models",
+    "processed_at": "2026-11-06T05:49:59.382902",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/rl2",
+    "processed_at": "2026-11-06T05:49:59.382913",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/variational-lossy-autoencoder",
+    "processed_at": "2026-11-06T05:49:59.382942",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/extensions-and-limitations-of-the-neural-gpu",
+    "processed_at": "2026-11-06T05:49:59.382952",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/semi-supervised-knowledge-transfer-for-deep-learning-from-private-training-data",
+    "processed_at": "2026-11-06T05:49:59.382961",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/transfer-from-simulation-to-real-world-through-learning-deep-inverse-dynamics-model",
+    "processed_at": "2026-11-06T05:50:06.642456",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/team-update-august",
+    "processed_at": "2026-11-06T05:50:21.194361",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/adversarial-training-methods-for-semi-supervised-text-classification",
+    "processed_at": "2026-11-06T05:50:50.471364",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/team-update",
+    "processed_at": "2026-11-06T05:50:50.471385",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/welcome-pieter-and-shivon",
+    "processed_at": "2026-11-06T05:50:57.770319",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/weight-normalization",
+    "processed_at": "2026-11-06T05:51:05.226262",
+    "status": "skipped",
+    "reason": "description_too_short"
   }
 ]
