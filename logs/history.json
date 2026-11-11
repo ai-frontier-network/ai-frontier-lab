@@ -2576,5 +2576,23 @@
     "processed_at": "2026-11-06T05:51:05.226262",
     "status": "skipped",
     "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/gilbert-tobin-sam-nickless",
+    "processed_at": "2026-11-11T03:27:18.740262",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/business/customer-stories/ada",
+    "processed_at": "2026-11-11T04:58:42.135998",
+    "status": "skipped",
+    "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/business/learn/fine-tuning-gpt-4o-webinar",
+    "processed_at": "2026-11-11T04:58:49.617031",
+    "status": "skipped",
+    "reason": "description_too_short"
   }
 ]
