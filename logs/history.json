@@ -2594,5 +2594,11 @@
     "processed_at": "2026-11-11T04:58:49.617031",
     "status": "skipped",
     "reason": "description_too_short"
+  },
+  {
+    "url": "https://openai.com/index/advancing-computer-use-for-healthcare-teams",
+    "processed_at": "2026-11-17T05:28:11.479181",
+    "status": "skipped",
+    "reason": "description_too_short"
   }
 ]
